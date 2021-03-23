@@ -13,6 +13,11 @@ public class CardThrowing : MonoBehaviour
     [Range(-1,1)]
     public float alignementThreshold = 0.5f;
 
+    [Range(0, 1)]
+    public float Bratio;
+    [Range(0, 1)]
+    public float Cratio;
+
     public float duration;
     public float noise;
 
@@ -38,8 +43,8 @@ public class CardThrowing : MonoBehaviour
         {
             GameObject go = Instantiate(cardPrefab, cardOrigin.transform.position, Quaternion.identity);
 
-            B.position = Vector3.Lerp(cardOrigin.position, target.transform.position, 0.33f);
-            C.position = Vector3.Lerp(cardOrigin.position, target.transform.position, 0.66f);
+            B.position = Vector3.Lerp(cardOrigin.position, target.transform.position, Bratio);
+            C.position = Vector3.Lerp(cardOrigin.position, target.transform.position, Cratio);
 
             StartCoroutine(Interpolate(go, target.transform.position, duration));
         }
