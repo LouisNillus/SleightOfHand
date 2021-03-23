@@ -7,6 +7,13 @@ public class GameManager : MonoBehaviour
     public CursorLockMode cursorMode;
     public bool cursorVisibility;
 
+    public static GameManager instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,5 +25,18 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void SlowMotion(bool state, float value = 0.2f)
+    {
+        if(state == true)
+        {
+            Time.timeScale = value;
+            Time.fixedDeltaTime = Time.timeScale * 0.02f;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+        }
     }
 }
