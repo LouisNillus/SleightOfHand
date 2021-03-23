@@ -6,6 +6,8 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
 
+    public int HP;
+
 
     public float pathRefreshRate = 0f;
     [Range(0,5)]
@@ -33,7 +35,7 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (HP <= 0) Destroy(this.gameObject);
     }
 
     public IEnumerator UpdatePath(float refreshRate)

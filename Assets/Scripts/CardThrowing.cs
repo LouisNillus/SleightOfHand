@@ -10,15 +10,15 @@ public class CardThrowing : MonoBehaviour
     public Transform C;
     public GameObject target;
 
-
-    public float interpolateAmount;
+    [Range(-1,1)]
+    public float alignementThreshold = 0.5f;
 
     public float duration;
     public float noise;
 
+    public int cardDamages;
+
     public GameObject cardPrefab;
-
-
 
     public List<GameObject> enemies = new List<GameObject>();
 
@@ -32,24 +32,41 @@ public class CardThrowing : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetMouseButtonDown(0))
+        target = MostAlignedEnemy(); 
+        
+        if (Input.GetMouseButtonDown(0) && target != null)
         {
-            target = MostAlignedEnemy();        
             GameObject go = Instantiate(cardPrefab, cardOrigin.transform.position, Quaternion.identity);
 
             B.position = Vector3.Lerp(cardOrigin.position, target.transform.position, 0.33f);
             C.position = Vector3.Lerp(cardOrigin.position, target.transform.position, 0.66f);
 
-            StartCoroutine(Interpolate(go, duration));
+            StartCoroutine(Interpolate(go, target.transform.position, duration));
         }
 
-        if(Input.GetKey(KeyCode.A))
+        if (Input.GetMouseButtonDown(1))
         {
-            Time.timeScale = 0.1f;
+            foreach(GameObject en in enemies)
+            {
+                GameObject go = Instantiate(cardPrefab, cardOrigin.transform.position, Quaternion.identity);
+
+                target = en;
+
+                B.position = Vector3.Lerp(cardOrigin.position, target.transform.position, 0.33f);
+                C.position = Vector3.Lerp(cardOrigin.position, target.transform.position, 0.66f);
+
+
+                StartCoroutine(Interpolate(go, target.transform.position, duration));
+            }
+        }
+
+        if (Input.GetKey(KeyCode.C))
+        {
+            GameManager.instance.SlowMotion(true, 0.2f);
         }
         else
         {
-            Time.timeScale = 1f;
+            GameManager.instance.SlowMotion(false);
         }
         
     }
@@ -70,7 +87,7 @@ public class CardThrowing : MonoBehaviour
         return Vector3.Lerp(ab_bc, bc_cd, t);
     }
 
-    public IEnumerator Interpolate(GameObject _go, float duration)
+    public IEnumerator Interpolate(GameObject _go, Vector3 finalPos, float duration)
     {
         float time = 0f;
 
@@ -78,12 +95,14 @@ public class CardThrowing : MonoBehaviour
         Vector3 c = NoisyVector(C.position, noise);
 
         Vector3 oldPos = _go.transform.position;
+        Vector3 firstPos = _go.transform.position;
         Vector3 newPos = _go.transform.position;
 
         while (time < duration)
         {
             oldPos = newPos;
-            _go.transform.position = CubicInterpolation(cardOrigin.position, b, c, target.transform.position, (time/duration));
+            _go.transform.localEulerAngles = Vector3.Lerp(Vector3.zero, Vector3.up * 360f, time / duration);
+            _go.transform.position = CubicInterpolation(firstPos, b, c, finalPos, (time/duration));
             newPos = _go.transform.position;
             Vector3 v3 = newPos - oldPos;
             _go.transform.rotation = Quaternion.LookRotation(v3);
@@ -91,8 +110,6 @@ public class CardThrowing : MonoBehaviour
             time += Time.deltaTime;
             yield return null;
         }
-        
-        Methods.SetMaterialColor(target, Random.ColorHSV());
 
         Destroy(_go);
     }
@@ -104,11 +121,12 @@ public class CardThrowing : MonoBehaviour
 
     public GameObject MostAlignedEnemy()
     {
-        GameObject currentBest = target;
+        GameObject currentBest = null;
         float bestScore = -1000f;
 
         foreach(GameObject en in enemies)
         {
+            if(Vector3.Dot((en.transform.position - Camera.main.transform.position).normalized, Camera.main.transform.forward.normalized) > alignementThreshold)
             if (bestScore < Vector3.Dot((en.transform.position - Camera.main.transform.position).normalized, Camera.main.transform.forward.normalized))
             {
                 bestScore = Vector3.Dot((en.transform.position - Camera.main.transform.position).normalized, Camera.main.transform.forward.normalized);
@@ -116,6 +134,8 @@ public class CardThrowing : MonoBehaviour
                 currentBest = en;
             }
         }
+
+        if (target != null && currentBest == null) Methods.SetMaterialColor(target, Color.white);
 
         Methods.SetMaterialColor(currentBest, Color.red);
         return currentBest;
