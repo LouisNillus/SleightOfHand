@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CardThrowing : MonoBehaviour
 {
+    public static CardThrowing instance;
 
     public Transform cardOrigin;
     public Transform B;
@@ -13,6 +14,11 @@ public class CardThrowing : MonoBehaviour
     [Range(-1,1)]
     public float alignementThreshold = 0.5f;
 
+    [Range(0, 1)]
+    public float Bratio;
+    [Range(0, 1)]
+    public float Cratio;
+
     public float duration;
     public float noise;
 
@@ -21,6 +27,11 @@ public class CardThrowing : MonoBehaviour
     public GameObject cardPrefab;
 
     public List<GameObject> enemies = new List<GameObject>();
+    
+    private void Awake()
+    {
+        instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -34,14 +45,16 @@ public class CardThrowing : MonoBehaviour
 
         target = MostAlignedEnemy(); 
         
-        if (Input.GetMouseButtonDown(0) && target != null)
+        /*if (Input.GetMouseButtonDown(0) && target != null)
         {
             GameObject go = Instantiate(cardPrefab, cardOrigin.transform.position, Quaternion.identity);
 
-            B.position = Vector3.Lerp(cardOrigin.position, target.transform.position, 0.33f);
-            C.position = Vector3.Lerp(cardOrigin.position, target.transform.position, 0.66f);
+            B.position = Vector3.Lerp(cardOrigin.position, target.transform.position, Bratio);
+            C.position = Vector3.Lerp(cardOrigin.position, target.transform.position, Cratio);
 
             StartCoroutine(Interpolate(go, target.transform.position, duration));
+
+            target.GetComponent<Enemy>().TakeDamages(cardDamages);
         }
 
         if (Input.GetMouseButtonDown(1))
@@ -58,7 +71,7 @@ public class CardThrowing : MonoBehaviour
 
                 StartCoroutine(Interpolate(go, target.transform.position, duration));
             }
-        }
+        }*/
 
         if (Input.GetKey(KeyCode.C))
         {
@@ -69,6 +82,21 @@ public class CardThrowing : MonoBehaviour
             GameManager.instance.SlowMotion(false);
         }
         
+    }
+
+    public void ThrowCard()
+    {
+        if(target != null)
+        {
+            GameObject go = Instantiate(cardPrefab, cardOrigin.transform.position, Quaternion.identity);
+
+            B.position = Vector3.Lerp(cardOrigin.position, target.transform.position, Bratio);
+            C.position = Vector3.Lerp(cardOrigin.position, target.transform.position, Cratio);
+
+            StartCoroutine(Interpolate(go, target.transform.position, duration));
+
+            target.GetComponent<Enemy>().TakeDamages(cardDamages);
+        }
     }
 
     public Vector3 QuadraticInterpolation(Vector3 a, Vector3 b, Vector3 c, float t)
@@ -110,6 +138,10 @@ public class CardThrowing : MonoBehaviour
             time += Time.deltaTime;
             yield return null;
         }
+
+        //Target reached :
+
+
 
         Destroy(_go);
     }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Invector.vCharacterController;
 
 public class Player : MonoBehaviour
@@ -10,6 +11,13 @@ public class Player : MonoBehaviour
     Animator animator;
 
     bool canSlide = true;
+
+    public int HP;
+    public float delayThrow;
+    public float attackCD;
+    float attackCDProgress;
+
+    [HideInInspector] public UnityEvent OnDead;
 
     private void Awake()
     {
@@ -29,6 +37,33 @@ public class Player : MonoBehaviour
         {
             StartCoroutine(Slide());
         }
+
+        if(Input.GetMouseButtonDown(0))
+        {
+            if(attackCDProgress == 0f)
+            {
+                StartCoroutine(ThrowCardCoroutine());
+            }
+        }
+
+        OnDeadTrigger();
+    }
+
+    public IEnumerator ThrowCardCoroutine()
+    {
+        while(attackCDProgress < attackCD)
+        {
+            attackCDProgress += Time.deltaTime;
+            yield return null;
+        }
+
+        animator.SetTrigger("ThrowCards");
+        attackCDProgress = 0f;
+    }
+
+    public void ThrowCard()
+    {
+        CardThrowing.instance.ThrowCard();
     }
 
     public IEnumerator Slide()
@@ -58,4 +93,15 @@ public class Player : MonoBehaviour
         }
         canSlide = true;
     }
+
+    public void TakeDamages(int value)
+    {
+        HP -= value;
+    }
+
+    public void OnDeadTrigger()
+    {
+        if (HP <= 0) OnDead.Invoke();
+    }
+
 }
