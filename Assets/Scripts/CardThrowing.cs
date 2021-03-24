@@ -11,6 +11,9 @@ public class CardThrowing : MonoBehaviour
     public Transform C;
     public GameObject target;
 
+    [Range(0,100)]
+    public int aceProbability;
+
     [Range(-1,1)]
     public float alignementThreshold = 0.5f;
 
@@ -90,14 +93,17 @@ public class CardThrowing : MonoBehaviour
         {
             GameObject go = Instantiate(cardPrefab, cardOrigin.transform.position, Quaternion.identity);
 
-            B.position = Vector3.Lerp(cardOrigin.position, target.transform.position, Bratio);
-            C.position = Vector3.Lerp(cardOrigin.position, target.transform.position, Cratio);
+            GameObject g = target;
 
-            StartCoroutine(Interpolate(go, target.transform.position, duration));
+            B.position = Vector3.Lerp(cardOrigin.position, g.transform.position, Bratio);
+            C.position = Vector3.Lerp(cardOrigin.position, g.transform.position, Cratio);
+
+            StartCoroutine(Interpolate(go, g.transform.position, duration));
 
             target.GetComponent<Enemy>().TakeDamages(cardDamages);
         }
     }
+
 
     public Vector3 QuadraticInterpolation(Vector3 a, Vector3 b, Vector3 c, float t)
     {
@@ -119,8 +125,8 @@ public class CardThrowing : MonoBehaviour
     {
         float time = 0f;
 
-        Vector3 b = NoisyVector(B.position, noise);
-        Vector3 c = NoisyVector(C.position, noise);
+        Vector3 b = B.position.NoisyVector(noise);
+        Vector3 c = C.position.NoisyVector(noise);
 
         Vector3 oldPos = _go.transform.position;
         Vector3 firstPos = _go.transform.position;
@@ -146,10 +152,7 @@ public class CardThrowing : MonoBehaviour
         Destroy(_go);
     }
 
-    public Vector3 NoisyVector(Vector3 vec, float range)
-    {
-        return new Vector3(vec.x + Random.Range(-range, range), vec.y + Random.Range(-range, range), vec.z + Random.Range(-range, range));
-    }
+
 
     public GameObject MostAlignedEnemy()
     {

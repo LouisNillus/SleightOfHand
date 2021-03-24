@@ -50,13 +50,14 @@ public class Player : MonoBehaviour
 
     public IEnumerator ThrowCardCoroutine()
     {
+
+        animator.SetTrigger("ThrowCards");
+
         while(attackCDProgress < attackCD)
         {
             attackCDProgress += Time.deltaTime;
             yield return null;
         }
-
-        animator.SetTrigger("ThrowCards");
         attackCDProgress = 0f;
     }
 
