@@ -99,22 +99,24 @@ public class Enemy : MonoBehaviour
     {
         isAttacking = true;
 
-        Debug.Log("Attack !");
         float timeToCast = 0f;
         float timeToCD = 0f;
 
         while(timeToCast < attackCastDelay)
         {
+            
+            agent.isStopped = true;
             if (IsInAttackRange() == false) //Cancel l'attaque si la target sort de la range
             { 
-                Debug.Log("Cancel Attack");
+                agent.isStopped = false;
                 yield break;
             }
 
             timeToCast += Time.deltaTime;
             yield return null;
-
         }
+
+            agent.isStopped = false;
 
         if (IsInAttackRange()) target.GetComponent<Player>().TakeDamages(damages);
 
@@ -204,9 +206,19 @@ public class Enemy : MonoBehaviour
             time += Time.deltaTime;
             yield return null;
         }
-            agent.isStopped = false;
+        agent.isStopped = false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(Methods.ChangeY(transform.position, transform.position.y - (transform.localScale.y / 2)), Methods.ChangeX(Methods.ChangeY(transform.position, transform.position.y - (transform.localScale.y / 2)), transform.position.x + attackRange));
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(Methods.ChangeY(transform.position, transform.position.y - (transform.localScale.y / 2)), Methods.ChangeX(Methods.ChangeY(transform.position, transform.position.y - (transform.localScale.y / 2)), transform.position.x + triggerRange));
     }
 }
+
+
 
 
  [CustomEditor(typeof(Enemy))]
