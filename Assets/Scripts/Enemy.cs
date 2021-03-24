@@ -11,16 +11,26 @@ public class Enemy : MonoBehaviour
 {
     public bool debug;
 
-
+    [Header("Data")]
+    [Range(0,500)]
     public int HP;
+    [Range(0,100)]
+    public int damages;
     
+    [Header("Pathfinding")]
     public float pathRefreshRate = 0f;
 
-    public bool attackRangeFromEnemySize;
+    [Header("Ranges")]
     [Range(0,50)]
     public float chaseRange = 0f;
     [Range(0,5)]
     public float attackRange = 0f;
+    [Range(0,5)]
+    public float triggerRange = 0f;
+
+
+    [Header("Attack")]
+    public bool attackRangeFromEnemySize;
     [Range(0,5)]
     public float attackCastDelay = 0f;
     [Range(0,5)]
@@ -30,7 +40,6 @@ public class Enemy : MonoBehaviour
     [HideInInspector] public UnityEvent OnTargetEnterInSight;
     [HideInInspector] public UnityEvent OnTargetEnterInRange;
 
-    public int damages;
 
     public GameObject target;
     public bool isAttacking = false;
@@ -81,7 +90,7 @@ public class Enemy : MonoBehaviour
     #region Attack
     public void Attack()
     {
-        if (IsInAttackRange() && isAttacking == false)
+        if (IsInAttackRange() && /*IsInTriggerRange() &&*/ isAttacking == false)
         {
             StartCoroutine(UpdateAttack());
         }
@@ -122,6 +131,12 @@ public class Enemy : MonoBehaviour
     {
         if (target == null) return false;
         else return Methods.FlatDistanceTo(this.transform.position, target.transform.position) <= attackRange;
+    }
+
+    public bool IsInTriggerRange()
+    {
+        if (target == null) return false;
+        else return Methods.FlatDistanceTo(this.transform.position, target.transform.position) <= triggerRange;
     }
 
     #endregion
@@ -209,8 +224,10 @@ public class EnemyEditor : Editor
             Handles.zTest = UnityEngine.Rendering.CompareFunction.LessEqual;
             Handles.color = Color.blue;
             Handles.DrawWireDisc(Methods.ChangeY(e.transform.position, e.transform.position.y - (e.transform.localScale.y/2)), e.transform.up, e.chaseRange);
-            Handles.color = Color.red;
+            Handles.color = Color.yellow;
             Handles.DrawWireDisc(Methods.ChangeY(e.transform.position, e.transform.position.y - (e.transform.localScale.y / 2)), e.transform.up, e.attackRange);
+            Handles.color = Color.red;
+            Handles.DrawWireDisc(Methods.ChangeY(e.transform.position, e.transform.position.y - (e.transform.localScale.y / 2)), e.transform.up, e.triggerRange);
         }
     }
 }
