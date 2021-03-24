@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
 
     public int HP;
     public float delayThrow;
+    public float attackCD;
+    float attackCDProgress;
 
     [HideInInspector] public UnityEvent OnDead;
 
@@ -38,10 +40,25 @@ public class Player : MonoBehaviour
 
         if(Input.GetMouseButtonDown(0))
         {
-            animator.SetTrigger("ThrowCards");
+            if(attackCDProgress == 0f)
+            {
+                StartCoroutine(ThrowCardCoroutine());
+            }
         }
 
         OnDeadTrigger();
+    }
+
+    public IEnumerator ThrowCardCoroutine()
+    {
+        while(attackCDProgress < attackCD)
+        {
+            attackCDProgress += Time.deltaTime;
+            yield return null;
+        }
+
+        animator.SetTrigger("ThrowCards");
+        attackCDProgress = 0f;
     }
 
     public void ThrowCard()
