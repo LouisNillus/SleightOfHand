@@ -13,7 +13,6 @@ public class Player : MonoBehaviour
     bool canSlide = true;
 
     public int HP;
-    public float delayThrow;
     public float attackCD;
     float attackCDProgress;
 
@@ -81,11 +80,11 @@ public class Player : MonoBehaviour
         }
 
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1f); //slide CD + 0.25f
 
         cameraSmooth = 0f;
 
-        while (cameraSmooth < 0.25f)
+        while (cameraSmooth < 0.25f) // <-- 0.25f
         {
             Camera.main.GetComponent<vThirdPersonCamera>().height = Mathf.Lerp(1.1f, 1.8f, cameraSmooth / 0.25f);
             cameraSmooth += Time.deltaTime;
