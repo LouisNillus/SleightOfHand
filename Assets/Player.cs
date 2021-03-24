@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     bool canSlide = true;
 
     public int HP;
+    public float delayThrow;
 
     [HideInInspector] public UnityEvent OnDead;
 
@@ -35,7 +36,17 @@ public class Player : MonoBehaviour
             StartCoroutine(Slide());
         }
 
+        if(Input.GetMouseButtonDown(0))
+        {
+            animator.SetTrigger("ThrowCards");
+        }
+
         OnDeadTrigger();
+    }
+
+    public void ThrowCard()
+    {
+        CardThrowing.instance.ThrowCard();
     }
 
     public IEnumerator Slide()
