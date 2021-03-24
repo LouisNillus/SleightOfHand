@@ -23,9 +23,9 @@ public class Enemy : MonoBehaviour
     [Header("Ranges")]
     [Range(0,50)]
     public float chaseRange = 0f;
-    [Range(0,5)]
+    [Range(0,15)]
     public float attackRange = 0f;
-    [Range(0,5)]
+    [Range(0,15)]
     public float triggerRange = 0f;
 
 
@@ -90,7 +90,7 @@ public class Enemy : MonoBehaviour
     #region Attack
     public void Attack()
     {
-        if (IsInAttackRange() && /*IsInTriggerRange() &&*/ isAttacking == false)
+        if (IsInAttackRange() && IsInTriggerRange() && isAttacking == false)
         {
             StartCoroutine(UpdateAttack());
         }
