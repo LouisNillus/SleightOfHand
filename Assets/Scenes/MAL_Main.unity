@@ -123,6 +123,67 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: bf03631850dc26f43954e60fe85d70e1, type: 2}
+--- !u!1001 &159563409
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1876438663, guid: 6f2d3a61136090645a534849bbc99d5f, type: 3}
+      propertyPath: m_Name
+      value: Trails
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386370732617552580, guid: 6f2d3a61136090645a534849bbc99d5f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.585
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386370732617552580, guid: 6f2d3a61136090645a534849bbc99d5f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.614
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386370732617552580, guid: 6f2d3a61136090645a534849bbc99d5f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386370732617552580, guid: 6f2d3a61136090645a534849bbc99d5f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.70710677
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386370732617552580, guid: 6f2d3a61136090645a534849bbc99d5f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386370732617552580, guid: 6f2d3a61136090645a534849bbc99d5f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386370732617552580, guid: 6f2d3a61136090645a534849bbc99d5f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.70710677
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386370732617552580, guid: 6f2d3a61136090645a534849bbc99d5f, type: 3}
+      propertyPath: m_RootOrder
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386370732617552580, guid: 6f2d3a61136090645a534849bbc99d5f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386370732617552580, guid: 6f2d3a61136090645a534849bbc99d5f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1386370732617552580, guid: 6f2d3a61136090645a534849bbc99d5f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 4990739776283089070, guid: 6f2d3a61136090645a534849bbc99d5f, type: 3}
+      propertyPath: m_Name
+      value: Card
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6f2d3a61136090645a534849bbc99d5f, type: 3}
 --- !u!1 &192977646
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,9 +219,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: 100
   pathRefreshRate: 1
+  attackRangeFromEnemySize: 0
+  chaseRange: 0
   attackRange: 2
   attackCastDelay: 0.2
   attackCD: 0.5
+  OnDead:
+    m_PersistentCalls:
+      m_Calls: []
+  damages: 0
+  target: {fileID: 0}
 --- !u!195 &192977648
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -294,9 +362,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: 100
   pathRefreshRate: 1
+  attackRangeFromEnemySize: 0
+  chaseRange: 0
   attackRange: 2
   attackCastDelay: 0.2
   attackCD: 0.5
+  OnDead:
+    m_PersistentCalls:
+      m_Calls: []
+  damages: 0
+  target: {fileID: 0}
 --- !u!195 &251536634
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -539,9 +614,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: 100
   pathRefreshRate: 1
+  attackRangeFromEnemySize: 0
+  chaseRange: 0
   attackRange: 2
   attackCastDelay: 0.2
   attackCD: 0.5
+  OnDead:
+    m_PersistentCalls:
+      m_Calls: []
+  damages: 0
+  target: {fileID: 0}
 --- !u!195 &362380420
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -657,6 +739,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 341e4361c294efb48afc62caf51558ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HP: 0
+  OnDead:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &466786917
 GameObject:
   m_ObjectHideFlags: 0
@@ -691,6 +777,8 @@ MonoBehaviour:
   C: {fileID: 1498355215}
   target: {fileID: 0}
   alignementThreshold: 0.5
+  Bratio: 0
+  Cratio: 0
   duration: 0.5
   noise: 2
   cardDamages: 0
@@ -867,9 +955,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: 100
   pathRefreshRate: 1
+  attackRangeFromEnemySize: 0
+  chaseRange: 0
   attackRange: 2
   attackCastDelay: 0.2
   attackCD: 0.5
+  OnDead:
+    m_PersistentCalls:
+      m_Calls: []
+  damages: 0
+  target: {fileID: 0}
 --- !u!195 &482409459
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1003,9 +1098,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: 100
   pathRefreshRate: 1
+  attackRangeFromEnemySize: 0
+  chaseRange: 0
   attackRange: 2
   attackCastDelay: 0.2
   attackCD: 0.5
+  OnDead:
+    m_PersistentCalls:
+      m_Calls: []
+  damages: 0
+  target: {fileID: 0}
 --- !u!195 &517815763
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1234,9 +1336,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: 100
   pathRefreshRate: 1
+  attackRangeFromEnemySize: 0
+  chaseRange: 0
   attackRange: 2
   attackCastDelay: 0.2
   attackCD: 0.5
+  OnDead:
+    m_PersistentCalls:
+      m_Calls: []
+  damages: 0
+  target: {fileID: 0}
 --- !u!195 &595405700
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1740,9 +1849,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: 100
   pathRefreshRate: 1
+  attackRangeFromEnemySize: 0
+  chaseRange: 0
   attackRange: 2
   attackCastDelay: 0.2
   attackCD: 0.5
+  OnDead:
+    m_PersistentCalls:
+      m_Calls: []
+  damages: 0
+  target: {fileID: 0}
 --- !u!195 &927280708
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1876,9 +1992,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: 100
   pathRefreshRate: 1
+  attackRangeFromEnemySize: 0
+  chaseRange: 0
   attackRange: 2
   attackCastDelay: 0.2
   attackCD: 0.5
+  OnDead:
+    m_PersistentCalls:
+      m_Calls: []
+  damages: 0
+  target: {fileID: 0}
 --- !u!195 &1052275978
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2397,9 +2520,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: 100
   pathRefreshRate: 1
+  attackRangeFromEnemySize: 0
+  chaseRange: 0
   attackRange: 2
   attackCastDelay: 0.2
   attackCD: 0.5
+  OnDead:
+    m_PersistentCalls:
+      m_Calls: []
+  damages: 0
+  target: {fileID: 0}
 --- !u!195 &1270025359
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2502,9 +2632,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: 100
   pathRefreshRate: 1
+  attackRangeFromEnemySize: 0
+  chaseRange: 0
   attackRange: 2
   attackCastDelay: 0.2
   attackCD: 0.5
+  OnDead:
+    m_PersistentCalls:
+      m_Calls: []
+  damages: 0
+  target: {fileID: 0}
 --- !u!195 &1388123391
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2638,9 +2775,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: 100
   pathRefreshRate: 1
+  attackRangeFromEnemySize: 0
+  chaseRange: 0
   attackRange: 2
   attackCastDelay: 0.2
   attackCD: 0.5
+  OnDead:
+    m_PersistentCalls:
+      m_Calls: []
+  damages: 0
+  target: {fileID: 0}
 --- !u!195 &1481296687
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2839,9 +2983,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: 100
   pathRefreshRate: 1
+  attackRangeFromEnemySize: 0
+  chaseRange: 0
   attackRange: 2
   attackCastDelay: 0.2
   attackCD: 0.5
+  OnDead:
+    m_PersistentCalls:
+      m_Calls: []
+  damages: 0
+  target: {fileID: 0}
 --- !u!195 &1980433224
 NavMeshAgent:
   m_ObjectHideFlags: 0
