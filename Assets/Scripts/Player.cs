@@ -75,7 +75,7 @@ public class Player : MonoBehaviour
         animator.SetTrigger("Slide");
         while (cameraSmooth < 0.25f)
         {
-            Camera.main.GetComponent<vThirdPersonCamera>().height = Mathf.Lerp(currentHeight, 1.1f, cameraSmooth/0.25f);
+            Camera.main.GetComponent<vThirdPersonCamera>().height = Mathf.Lerp(currentHeight, 0.5f, cameraSmooth/0.25f);
             cameraSmooth += Time.deltaTime;
             yield return null;
         }
@@ -87,7 +87,7 @@ public class Player : MonoBehaviour
 
         while (cameraSmooth < 0.25f) // <-- 0.25f
         {
-            Camera.main.GetComponent<vThirdPersonCamera>().height = Mathf.Lerp(1.1f, 1.8f, cameraSmooth / 0.25f);
+            Camera.main.GetComponent<vThirdPersonCamera>().height = Mathf.Lerp(0.5f, 1.8f, cameraSmooth / 0.25f);
             cameraSmooth += Time.deltaTime;
             yield return null;
         }
