@@ -201,7 +201,6 @@ public class Enemy : MonoBehaviour
 
         while(time < duration)
         {
-            Debug.Log("frozen");
             agent.isStopped = true;
             time += Time.deltaTime;
             yield return null;
@@ -243,9 +242,7 @@ public class Enemy : MonoBehaviour
             yield return null;
             t += Time.deltaTime;
         }
-
-
-    }
+    }    
 }
 
 

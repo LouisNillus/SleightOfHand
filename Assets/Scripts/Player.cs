@@ -44,6 +44,14 @@ public class Player : MonoBehaviour
                 StartCoroutine(ThrowCardCoroutine());
             }
         }
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (CardThrowing.instance.canCombo)
+            {
+                CardThrowing.instance.forceAceLeftClick = CardThrowing.instance.forceAceRightClick;
+                StartCoroutine(ThrowCardCoroutine());           
+            }
+        }
 
         OnDeadTrigger();
     }

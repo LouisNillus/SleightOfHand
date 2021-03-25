@@ -11,7 +11,8 @@ public class CardThrowing : MonoBehaviour
     public Transform C;
     public GameObject target;
 
-    public CardType forceAce;
+    public CardType forceAceLeftClick;
+    public CardType forceAceRightClick;
 
     [Header("Cards Data")]
     [Range(0,100)]
@@ -33,12 +34,15 @@ public class CardThrowing : MonoBehaviour
     public float duration;
     public float noise;
 
+    public (CardType, CardType) combo = (CardType.Any, CardType.Any);
+
     /*[HideInInspector]*/ public CardType lastCardType;
 
     public GameObject cardPrefab;
 
     [HideInInspector] public List<GameObject> enemies = new List<GameObject>();
-    
+    public bool canCombo;
+
     private void Awake()
     {
         instance = this;
@@ -100,14 +104,20 @@ public class CardThrowing : MonoBehaviour
         if(target != null)
         {
             GameObject go = Instantiate(cardPrefab, cardOrigin.transform.position, Quaternion.identity);
-            go.GetComponent<Card>().Initialize();
+            Card c = go.GetComponent<Card>();
+            c.Initialize();
 
-            GameObject g = target;
+            if (canCombo)
+            {
+                Debug.Log("Combo !");
+                combo.Item1 = lastCardType;
+                combo.Item2 = c.typeOfCard;        
+            }
 
             B.position = Vector3.Lerp(cardOrigin.position, target.transform.position, Bratio);
             C.position = Vector3.Lerp(cardOrigin.position, target.transform.position, Cratio);
 
-            StartCoroutine(Interpolate(go, target.transform.position, duration));
+            StartCoroutine(Interpolate(go, target, duration));
 
             target.GetComponent<Enemy>().TakeDamages(normalCardDamages);
         }
@@ -130,7 +140,7 @@ public class CardThrowing : MonoBehaviour
         return Vector3.Lerp(ab_bc, bc_cd, t);
     }
 
-    public IEnumerator Interpolate(GameObject _go, Vector3 finalPos, float duration)
+    public IEnumerator Interpolate(GameObject _go, GameObject _target, float duration)
     {
         float time = 0f;
 
@@ -146,15 +156,22 @@ public class CardThrowing : MonoBehaviour
 
         if (card.isAnAce)
         {
-            Debug.Log("Hey It's an ace !");
             GameManager.instance.StartCoroutine(GameManager.instance.TimedSlowMotion(0.75f));
         }
 
+        lastCardType = card.typeOfCard;
+
         while (time < duration)
         {
+            if (time < 0.75f)
+            {
+                canCombo = true;
+            }
+            else canCombo = false;
+
             oldPos = newPos;
             _go.transform.localEulerAngles = Vector3.Lerp(Vector3.zero, Vector3.up * 360f, time / duration);
-            _go.transform.position = CubicInterpolation(firstPos, b, c, finalPos, (time/duration));
+            _go.transform.position = CubicInterpolation(firstPos, b, c, _target.transform.position, (time/duration));
             newPos = _go.transform.position;
             Vector3 v3 = newPos - oldPos;
             _go.transform.rotation = Quaternion.LookRotation(v3);
@@ -164,11 +181,16 @@ public class CardThrowing : MonoBehaviour
         }
 
         //Target reached :
-        card.Play(target.GetComponent<Enemy>());
+        if(combo != (CardType.Any, CardType.Any))
+        {
+            card.Combo(combo, _target.GetComponent<Enemy>());
+        }
+        else
+        {
+            card.Play(_target.GetComponent<Enemy>());
+        }
 
 
-
-        lastCardType = card.typeOfCard;
 
         Destroy(_go);
     }
