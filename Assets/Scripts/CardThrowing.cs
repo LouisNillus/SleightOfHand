@@ -11,12 +11,20 @@ public class CardThrowing : MonoBehaviour
     public Transform C;
     public GameObject target;
 
+    public CardType forceAce;
+
+    [Header("Cards Data")]
     [Range(0,100)]
     public int aceProbability;
+    [Range(0,100)]
+    public int normalCardDamages;
 
+    [Header("Aiming Settings")]
     [Range(-1,1)]
     public float alignementThreshold = 0.5f;
 
+
+    [Header("Cards Movement")]
     [Range(0, 1)]
     public float Bratio;
     [Range(0, 1)]
@@ -25,11 +33,11 @@ public class CardThrowing : MonoBehaviour
     public float duration;
     public float noise;
 
-    public int cardDamages;
+    /*[HideInInspector]*/ public CardType lastCardType;
 
     public GameObject cardPrefab;
 
-    public List<GameObject> enemies = new List<GameObject>();
+    [HideInInspector] public List<GameObject> enemies = new List<GameObject>();
     
     private void Awake()
     {
@@ -92,15 +100,16 @@ public class CardThrowing : MonoBehaviour
         if(target != null)
         {
             GameObject go = Instantiate(cardPrefab, cardOrigin.transform.position, Quaternion.identity);
+            go.GetComponent<Card>().Initialize();
 
             GameObject g = target;
 
-            B.position = Vector3.Lerp(cardOrigin.position, g.transform.position, Bratio);
-            C.position = Vector3.Lerp(cardOrigin.position, g.transform.position, Cratio);
+            B.position = Vector3.Lerp(cardOrigin.position, target.transform.position, Bratio);
+            C.position = Vector3.Lerp(cardOrigin.position, target.transform.position, Cratio);
 
-            StartCoroutine(Interpolate(go, g.transform.position, duration));
+            StartCoroutine(Interpolate(go, target.transform.position, duration));
 
-            target.GetComponent<Enemy>().TakeDamages(cardDamages);
+            target.GetComponent<Enemy>().TakeDamages(normalCardDamages);
         }
     }
 
@@ -132,6 +141,15 @@ public class CardThrowing : MonoBehaviour
         Vector3 firstPos = _go.transform.position;
         Vector3 newPos = _go.transform.position;
 
+        Card card = _go.GetComponent<Card>();
+
+
+        if (card.isAnAce)
+        {
+            Debug.Log("Hey It's an ace !");
+            GameManager.instance.StartCoroutine(GameManager.instance.TimedSlowMotion(0.75f));
+        }
+
         while (time < duration)
         {
             oldPos = newPos;
@@ -146,8 +164,11 @@ public class CardThrowing : MonoBehaviour
         }
 
         //Target reached :
+        card.Play(target.GetComponent<Enemy>());
 
 
+
+        lastCardType = card.typeOfCard;
 
         Destroy(_go);
     }

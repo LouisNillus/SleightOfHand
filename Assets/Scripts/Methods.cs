@@ -103,7 +103,14 @@ public static class Methods
         //matProp.SetColor("_Color", value); //NON HDRP
         go?.GetComponent<MeshRenderer>()?.SetPropertyBlock(matProp);
     }
-    
+
+    public static void SetEmissiveColor(GameObject go, Color value)
+    {
+        MaterialPropertyBlock matProp = new MaterialPropertyBlock();
+        matProp.SetColor("_EmissiveColorLDR", value); //HDRP
+        go?.GetComponent<MeshRenderer>()?.SetPropertyBlock(matProp);
+    }
+
     public static float GetMaterialValue(GameObject go, string value)
     {
         return go.GetComponent<MeshRenderer>().material.GetFloat(value);

@@ -216,6 +216,36 @@ public class Enemy : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawLine(Methods.ChangeY(transform.position, transform.position.y - (transform.localScale.y / 2)), Methods.ChangeX(Methods.ChangeY(transform.position, transform.position.y - (transform.localScale.y / 2)), transform.position.x + triggerRange));
     }
+
+    public IEnumerator Attract(float castDelay, float attractionDuration, float range)
+    {
+        float t = 0f;
+        while(t < castDelay)
+        {
+            t += Time.deltaTime;
+            yield return null;
+        }
+
+
+        t = 0f;
+
+        Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, range);
+
+        while (t < attractionDuration)
+        {
+            foreach (var hitCollider in hitColliders)
+            {
+                if (hitCollider.gameObject.GetComponent<Enemy>() && hitCollider.gameObject != this.gameObject)
+                {
+                    hitCollider.transform.position = Vector3.Lerp(hitCollider.transform.position, this.transform.position, (t/attractionDuration));
+                }
+            }
+            yield return null;
+            t += Time.deltaTime;
+        }
+
+
+    }
 }
 
 

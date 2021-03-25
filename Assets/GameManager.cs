@@ -39,4 +39,17 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1f;
         }
     }
+
+    public IEnumerator TimedSlowMotion(float duration, float value = 0.2f)
+    {
+        float t = 0f;
+        while(t < (duration*value))
+        {
+            SlowMotion(true, value);
+            t += Time.deltaTime;
+            yield return null;
+        }
+
+        SlowMotion(false);
+    }
 }
