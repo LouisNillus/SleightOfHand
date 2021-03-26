@@ -9696,7 +9696,7 @@ GameObject:
   - component: {fileID: 6116856448848303058}
   - component: {fileID: 7452044655627348474}
   - component: {fileID: 6544201339514652033}
-  - component: {fileID: 4234760997929318698}
+  - component: {fileID: 4527935941333648625}
   m_Layer: 0
   m_Name: Card
   m_TagString: Untagged
@@ -9877,6 +9877,20 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
+--- !u!114 &4527935941333648625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4990739776283089070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 050d7f083dd1a1546b3a5d6b84f09212, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  typeOfCard: 0
+  isAnAce: 0
 --- !u!1 &7372890692620987182
 GameObject:
   m_ObjectHideFlags: 0
