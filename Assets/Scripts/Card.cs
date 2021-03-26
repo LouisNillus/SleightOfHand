@@ -71,10 +71,10 @@ public class Card : MonoBehaviour, IPlayable
             case CardType.Any:
                 break;
             case CardType.Spades:
-                GameManager.instance.StartCoroutine(Spades(en.gameObject, 1f, 10f, 2f, 4f, 15));
+                GameManager.instance.StartCoroutine(Spades(en.gameObject, 1f, 10f, 2f, 4f, 15, -1f));
                 break;
             case CardType.Heart:
-                en.StartCoroutine(en.Attract(0.5f, 0.1f, 20f));
+                GameManager.instance.StartCoroutine(Heart(en.gameObject, 0.5f, 0.35f, 20f));
                 break;
             case CardType.Diamond:
                 GameManager.instance.StartCoroutine(Diamond(en.gameObject, (3f)));
@@ -107,15 +107,7 @@ public class Card : MonoBehaviour, IPlayable
 
     public IEnumerator Clubs(GameObject launcher, float castDelay, float pushDuration, float range, float distance)
     {
-        float t = 0f;
-        while (t < castDelay)
-        {
-            t += Time.deltaTime;
-            yield return null;
-        }
-
-
-        t = 0f;
+        yield return new WaitForSeconds(castDelay);
 
         Collider[] hitColliders = Physics.OverlapSphere(launcher.transform.position, range);
 
@@ -131,11 +123,12 @@ public class Card : MonoBehaviour, IPlayable
             }
         }
 
+        float t = 0f;
         while (t < pushDuration)
         {
             for (int i = 0; i < pos.Count; i++)
             {
-                enemies[i].transform.position = Vector3.Lerp(pos[i], pos[i] + ((enemies[i].transform.position - launcher.transform.position).normalized.ChangeY(0f) * distance), (t / pushDuration));
+                enemies[i].transform.position = Vector3.Lerp(pos[i], pos[i] + ((enemies[i].transform.position - launcher.transform.position).normalized.ChangeY(0f) * distance), CardThrowing.instance.easing.Evaluate(t / pushDuration));
             }
             yield return null;
             t += Time.deltaTime;
@@ -156,13 +149,13 @@ public class Card : MonoBehaviour, IPlayable
         agent.isStopped = false;
     }
 
-    public IEnumerator Spades(GameObject target, float castDelay, float length, float duration, float damageRange, int damages)
+    public IEnumerator Spades(GameObject target, float castDelay, float length, float duration, float damageRange, int damages, float heightOffset = 0f)
     {
         float time = 0f;
 
-        GameObject go = Instantiate(CardThrowing.instance.aceOfSpades, target.transform.position, Quaternion.identity);
+        GameObject go = Instantiate(CardThrowing.instance.aceOfSpades, target.transform.position.ChangeY(target.transform.position.y + heightOffset), Quaternion.identity);
 
-        Vector3 initPos = target.transform.position;
+        Vector3 initPos = go.transform.position;
 
         Vector3 direction = Camera.main.transform.forward;
         go.transform.rotation = Quaternion.LookRotation(direction);
@@ -206,6 +199,51 @@ public class Card : MonoBehaviour, IPlayable
         go.GetComponent<UnityEngine.VFX.VisualEffect>().Stop();
     }
 
+    public IEnumerator Heart(GameObject launcher, float castDelay, float attractionDuration, float range, float heightOffset = 0f)
+    {
+        GameObject go = Instantiate(CardThrowing.instance.aceOfHeart, launcher.transform.position.ChangeY(launcher.transform.position.y + heightOffset), Quaternion.identity);
+
+        Vector3 direction = Camera.main.transform.forward;
+        go.transform.rotation = Quaternion.LookRotation(direction);
+        go.transform.localEulerAngles = go.transform.localEulerAngles.ChangeX(0);
+
+            yield return new WaitForSeconds(castDelay);
+
+        Collider[] hitColliders = Physics.OverlapSphere(launcher.transform.position, range);
+
+        List<Vector3> pos = new List<Vector3>();
+        List<Vector3> finalPos = new List<Vector3>();
+        List<GameObject> enemies = new List<GameObject>();
+
+        foreach (var hitCollider in hitColliders)
+        {
+            if (hitCollider.gameObject.GetComponent<Enemy>() && hitCollider.gameObject != launcher.gameObject)
+            {
+                pos.Add(hitCollider.transform.position);
+                Vector3 vec = (hitCollider.transform.position + (launcher.transform.position - hitCollider.transform.position).normalized * 2f);
+                finalPos.Add(vec);
+                enemies.Add(hitCollider.gameObject);
+            }
+        }
+
+        float t = 0f;
+
+
+
+        while (t < attractionDuration)
+        {
+            for (int i = 0; i < pos.Count; i++)
+            {
+                Debug.Log(finalPos[i]);
+                Debug.DrawLine(finalPos[i], pos[i], Color.yellow);
+                Debug.Break();
+
+                enemies[i].transform.position = Vector3.Lerp(pos[i], finalPos[i], CardThrowing.instance.easing.Evaluate(t / attractionDuration));
+            }
+            yield return null;
+            t += Time.deltaTime;
+        }
+    }
 
 }
 

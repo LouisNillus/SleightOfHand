@@ -36,6 +36,10 @@ public class Enemy : MonoBehaviour
     [Range(0,5)]
     public float attackCD = 0f;
 
+    [Header("Behaviour")]
+    [Range(0, 10)]
+    public float lookPlayerRotationSpeed;
+
     [HideInInspector] public UnityEvent OnDead;
     [HideInInspector] public UnityEvent OnTargetEnterInSight;
     [HideInInspector] public UnityEvent OnTargetEnterInRange;
@@ -84,7 +88,10 @@ public class Enemy : MonoBehaviour
         Chase();
         Attack();
         Movement();
+        Rotation();
         OnDeadTrigger();
+
+
 
         lastPosition = currentPosition;
     }
@@ -94,6 +101,17 @@ public class Enemy : MonoBehaviour
         animator.SetFloat("Speed", (transform.position - lastPosition).magnitude * 100f);
     }
 
+    public void Rotation()
+    {
+        if(target != null)
+        {
+            Vector3 _direction = (target.transform.position - transform.position).normalized;
+            Quaternion _lookRotation = Quaternion.LookRotation(_direction);
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime * lookPlayerRotationSpeed);
+        }
+
+    }
 
     #region Attack
     public void Attack()
@@ -129,14 +147,17 @@ public class Enemy : MonoBehaviour
             agent.isStopped = false;
 
 
-        /*while (timeToRotate < 0.5f)
+
+
+        while (timeToRotate < 0.5f)
         {
 
 
-            this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, Quaternion.LookRotation(-Player.instance.transform.forward), timeToRotate / 0.5f);
             timeToRotate += Time.deltaTime;
             yield return null;
-        }*/
+        }
+
+
         animator.SetTrigger("Attack");
 
 
@@ -233,35 +254,6 @@ public class Enemy : MonoBehaviour
         Gizmos.DrawLine(Methods.ChangeY(transform.position, transform.position.y - (transform.localScale.y / 2)), Methods.ChangeX(Methods.ChangeY(transform.position, transform.position.y - (transform.localScale.y / 2)), transform.position.x + attackRange));
         Gizmos.color = Color.red;
         Gizmos.DrawLine(Methods.ChangeY(transform.position, transform.position.y - (transform.localScale.y / 2)), Methods.ChangeX(Methods.ChangeY(transform.position, transform.position.y - (transform.localScale.y / 2)), transform.position.x + triggerRange));
-    }
-
-    public IEnumerator Attract(float castDelay, float attractionDuration, float range)
-    {
-        float t = 0f;
-        while(t < castDelay)
-        {
-            t += Time.deltaTime;
-            yield return null;
-        }
-
-
-        t = 0f;
-
-        Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, range);
-
-        while (t < attractionDuration)
-        {
-            
-            foreach (var hitCollider in hitColliders)
-            {
-                if (hitCollider.gameObject.GetComponent<Enemy>() && hitCollider.gameObject != this.gameObject)
-                {
-                    hitCollider.transform.position = Vector3.Lerp(hitCollider.transform.position, this.transform.position, (t/attractionDuration));
-                }
-            }
-            yield return null;
-            t += Time.deltaTime;
-        }
     }
 }
 

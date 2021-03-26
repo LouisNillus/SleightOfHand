@@ -11,6 +11,8 @@ public class CardThrowing : MonoBehaviour
     public Transform C;
     public GameObject target;
 
+    public AnimationCurve easing;
+
     public CardType forceAceLeftClick;
     public CardType forceAceRightClick;
 
@@ -44,6 +46,7 @@ public class CardThrowing : MonoBehaviour
     public GameObject cardPrefab;
 
     public GameObject aceOfSpades;
+    public GameObject aceOfHeart;
 
     [HideInInspector] public List<GameObject> enemies = new List<GameObject>();
     public bool canCombo;
@@ -65,34 +68,6 @@ public class CardThrowing : MonoBehaviour
 
         target = MostAlignedEnemy(); 
         
-        /*if (Input.GetMouseButtonDown(0) && target != null)
-        {
-            GameObject go = Instantiate(cardPrefab, cardOrigin.transform.position, Quaternion.identity);
-
-            B.position = Vector3.Lerp(cardOrigin.position, target.transform.position, Bratio);
-            C.position = Vector3.Lerp(cardOrigin.position, target.transform.position, Cratio);
-
-            StartCoroutine(Interpolate(go, target.transform.position, duration));
-
-            target.GetComponent<Enemy>().TakeDamages(cardDamages);
-        }
-
-        if (Input.GetMouseButtonDown(1))
-        {
-            foreach(GameObject en in enemies)
-            {
-                GameObject go = Instantiate(cardPrefab, cardOrigin.transform.position, Quaternion.identity);
-
-                target = en;
-
-                B.position = Vector3.Lerp(cardOrigin.position, target.transform.position, 0.33f);
-                C.position = Vector3.Lerp(cardOrigin.position, target.transform.position, 0.66f);
-
-
-                StartCoroutine(Interpolate(go, target.transform.position, duration));
-            }
-        }*/
-
         if (Input.GetKey(KeyCode.C))
         {
             GameManager.instance.SlowMotion(true, 0.2f);
