@@ -9696,6 +9696,7 @@ GameObject:
   - component: {fileID: 6116856448848303058}
   - component: {fileID: 7452044655627348474}
   - component: {fileID: 6544201339514652033}
+  - component: {fileID: 4234760997929318698}
   m_Layer: 0
   m_Name: Card
   m_TagString: Untagged

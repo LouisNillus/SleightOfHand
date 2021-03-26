@@ -66,6 +66,28 @@ public static class Methods
     {
         return new Vector3(vec1.x * vec2.x * value, vec1.y * vec2.y * value, vec1.z * vec2.z * value);
     }
+    public static Vector3 NoisyVector(this Vector3 vec, float range)
+    {
+        return new Vector3(vec.x + Random.Range(-range, range), vec.y + Random.Range(-range, range), vec.z + Random.Range(-range, range));
+    }
+
+
+    //Courbes de bézier
+
+    public static Vector3 QuadraticInterpolation(Vector3 a, Vector3 b, Vector3 c, float t)
+    {
+        Vector3 ab = Vector3.Lerp(a, b, t);
+        Vector3 bc = Vector3.Lerp(b, c, t);
+
+        return Vector3.Lerp(ab, bc, t);
+    }
+    public static Vector3 CubicInterpolation(Vector3 a, Vector3 b, Vector3 c, Vector3 d, float t)
+    {
+        Vector3 ab_bc = QuadraticInterpolation(a, b, c, t);
+        Vector3 bc_cd = QuadraticInterpolation(b, c, d, t);
+
+        return Vector3.Lerp(ab_bc, bc_cd, t);
+    }
 
     public static void SetMaterialOpacity(GameObject go, float value)
     {
@@ -76,12 +98,21 @@ public static class Methods
     
     public static void SetMaterialColor(GameObject go, Color value)
     {
+        if (go.GetComponent<MeshRenderer>() == null) return;
+
         MaterialPropertyBlock matProp = new MaterialPropertyBlock();
         matProp.SetColor("_BaseColor", value); //HDRP
         //matProp.SetColor("_Color", value); //NON HDRP
         go?.GetComponent<MeshRenderer>()?.SetPropertyBlock(matProp);
     }
-    
+
+    public static void SetEmissiveColor(GameObject go, Color value)
+    {
+        MaterialPropertyBlock matProp = new MaterialPropertyBlock();
+        matProp.SetColor("_EmissiveColorLDR", value); //HDRP
+        go?.GetComponent<MeshRenderer>()?.SetPropertyBlock(matProp);
+    }
+
     public static float GetMaterialValue(GameObject go, string value)
     {
         return go.GetComponent<MeshRenderer>().material.GetFloat(value);
@@ -132,11 +163,20 @@ public static class Methods
         return new Vector2(vv.x, vv.z);
     }
 
+    public static Vector2 xy(this Vector3 vv)
+    {
+        return new Vector2(vv.x, vv.y);
+    }
+
+    public static Vector2 yz(this Vector3 vv)
+    {
+        return new Vector2(vv.y, vv.z);
+    }
+
     public static float FlatDistanceTo(this Vector3 from, Vector3 to)
     {
         Vector2 a = from.xz();
         Vector2 b = to.xz();
-
         return Vector2.Distance(a, b);
     }
 
