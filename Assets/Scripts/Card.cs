@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using Sirenix.OdinInspector;
 
 public class Card : MonoBehaviour, IPlayable
@@ -10,6 +11,7 @@ public class Card : MonoBehaviour, IPlayable
     [ReadOnly] public bool isAnAce;
 
     Vector3 playerPosWhenThrown;
+    Vector3 camPosWhenThrown;
 
     public (CardType, CardType) combo;
 
@@ -30,6 +32,7 @@ public class Card : MonoBehaviour, IPlayable
     {
         GenerateCard();
         playerPosWhenThrown = CardThrowing.instance.transform.position;
+        camPosWhenThrown = Camera.main.transform.forward;
     }
 
     public void GenerateCard()
@@ -68,12 +71,13 @@ public class Card : MonoBehaviour, IPlayable
             case CardType.Any:
                 break;
             case CardType.Spades:
+                GameManager.instance.StartCoroutine(Spades(en.gameObject, 1f, 10f, 2f, 4f, 15));
                 break;
             case CardType.Heart:
                 en.StartCoroutine(en.Attract(0.5f, 0.1f, 20f));
                 break;
             case CardType.Diamond:
-                en.StartCoroutine(en.Freeze(3f));
+                GameManager.instance.StartCoroutine(Diamond(en.gameObject, (3f)));
                 break;
             case CardType.Clubs:
                 GameManager.instance.StartCoroutine(Clubs(en.gameObject, 0.5f, 0.25f, 10f, 5f));
@@ -90,8 +94,7 @@ public class Card : MonoBehaviour, IPlayable
                 switch(combo.Item2)
                 {
                     case CardType.Diamond:
-                        Debug.Log("KABOOOOM");
-                        en.StartCoroutine(en.Freeze(3f));
+                        GameManager.instance.StartCoroutine(Diamond(en.gameObject, (3f)));
                         GameManager.instance.StartCoroutine(Clubs(en.gameObject, 0.5f, 0.25f, 10f, 5f));                                             
                     break;
                 }
@@ -138,6 +141,71 @@ public class Card : MonoBehaviour, IPlayable
             t += Time.deltaTime;
         }
     }
+    public IEnumerator Diamond(GameObject target, float duration)
+    {
+        float time = 0f;
+
+        NavMeshAgent agent = target.GetComponent<NavMeshAgent>();
+
+        while (time < duration)
+        {
+            agent.isStopped = true;
+            time += Time.deltaTime;
+            yield return null;
+        }
+        agent.isStopped = false;
+    }
+
+    public IEnumerator Spades(GameObject target, float castDelay, float length, float duration, float damageRange, int damages)
+    {
+        float time = 0f;
+
+        GameObject go = Instantiate(CardThrowing.instance.aceOfSpades, target.transform.position, Quaternion.identity);
+
+        Vector3 initPos = target.transform.position;
+
+        Vector3 direction = Camera.main.transform.forward;
+        go.transform.rotation = Quaternion.LookRotation(direction);
+        go.transform.localEulerAngles = go.transform.localEulerAngles.ChangeX(90);
+
+        while(time < castDelay)
+        {
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        time = 0f;
+
+        direction = Camera.main.transform.forward;
+        go.transform.rotation = Quaternion.LookRotation(direction);
+        go.transform.localEulerAngles = go.transform.localEulerAngles.ChangeX(90);
+
+        List<GameObject> hit = new List<GameObject>();
+
+
+
+        while (time < duration)
+        {
+            go.transform.position = Vector3.Lerp(go.transform.position, initPos + (direction).ChangeY(0f) * length, (time / duration));
+
+            Collider[] hitColliders = Physics.OverlapSphere(go.transform.position, damageRange);
+
+            foreach(var hitCollider in hitColliders)
+            {
+                if (hit.Contains(hitCollider.gameObject) == false && hitCollider.GetComponent<Enemy>())
+                {
+                    hit.Add(hitCollider.gameObject);
+                    hitCollider.GetComponent<Enemy>().TakeDamages(damages);
+                }
+            }
+
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        go.GetComponent<UnityEngine.VFX.VisualEffect>().Stop();
+    }
+
 
 }
 

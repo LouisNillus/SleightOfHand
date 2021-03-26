@@ -78,11 +78,6 @@ public class Enemy : MonoBehaviour
         Chase();
         Attack();
 
-        if(Input.GetKeyDown(KeyCode.B))
-        {
-            StartCoroutine(Freeze(2f));
-        }
-
         OnDeadTrigger();
     }
 
@@ -195,18 +190,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public IEnumerator Freeze(float duration)
-    {
-        float time = 0f;
 
-        while(time < duration)
-        {
-            agent.isStopped = true;
-            time += Time.deltaTime;
-            yield return null;
-        }
-        agent.isStopped = false;
-    }
 
     private void OnDrawGizmos()
     {

@@ -31,6 +31,9 @@ public class CardThrowing : MonoBehaviour
     [Range(0, 1)]
     public float Cratio;
 
+    [Range(0, 2)]
+    public float aceSlowMotionDuration;
+
     public float duration;
     public float noise;
 
@@ -39,6 +42,8 @@ public class CardThrowing : MonoBehaviour
     /*[HideInInspector]*/ public CardType lastCardType;
 
     public GameObject cardPrefab;
+
+    public GameObject aceOfSpades;
 
     [HideInInspector] public List<GameObject> enemies = new List<GameObject>();
     public bool canCombo;
@@ -107,17 +112,16 @@ public class CardThrowing : MonoBehaviour
             Card c = go.GetComponent<Card>();
             c.Initialize();
 
-            if (canCombo)
+            if (canCombo && c.typeOfCard != CardType.Any)
             {
-                Debug.Log("Combo !");
                 combo.Item1 = lastCardType;
-                combo.Item2 = c.typeOfCard;        
+                combo.Item2 = c.typeOfCard;
             }
 
             B.position = Vector3.Lerp(cardOrigin.position, target.transform.position, Bratio);
             C.position = Vector3.Lerp(cardOrigin.position, target.transform.position, Cratio);
 
-            StartCoroutine(Interpolate(go, target, duration));
+            StartCoroutine(Interpolate(go, target, duration, (combo.Item1 != CardType.Any && combo.Item2 != CardType.Any)));
 
             target.GetComponent<Enemy>().TakeDamages(normalCardDamages);
         }
@@ -140,7 +144,7 @@ public class CardThrowing : MonoBehaviour
         return Vector3.Lerp(ab_bc, bc_cd, t);
     }
 
-    public IEnumerator Interpolate(GameObject _go, GameObject _target, float duration)
+    public IEnumerator Interpolate(GameObject _go, GameObject _target, float duration, bool skipCard)
     {
         float time = 0f;
 
@@ -153,17 +157,16 @@ public class CardThrowing : MonoBehaviour
 
         Card card = _go.GetComponent<Card>();
 
-
         if (card.isAnAce)
         {
-            GameManager.instance.StartCoroutine(GameManager.instance.TimedSlowMotion(0.75f));
+            GameManager.instance.StartCoroutine(GameManager.instance.TimedSlowMotion(aceSlowMotionDuration));
         }
 
         lastCardType = card.typeOfCard;
 
         while (time < duration)
         {
-            if (time < 0.75f)
+            if (time < aceSlowMotionDuration)
             {
                 canCombo = true;
             }
@@ -180,10 +183,14 @@ public class CardThrowing : MonoBehaviour
             yield return null;
         }
 
+        if (skipCard) Destroy(_go);
+
         //Target reached :
-        if(combo != (CardType.Any, CardType.Any))
+        if(combo.Item1 != CardType.Any && combo.Item2 != CardType.Any)
         {
+            Debug.Log("wow");
             card.Combo(combo, _target.GetComponent<Enemy>());
+            ResetCombo();
         }
         else
         {
@@ -217,5 +224,10 @@ public class CardThrowing : MonoBehaviour
 
         Methods.SetMaterialColor(currentBest, Color.red);
         return currentBest;
+    }
+
+    public void ResetCombo()
+    {
+        combo = (CardType.Any, CardType.Any);
     }
 }
