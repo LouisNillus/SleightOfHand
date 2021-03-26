@@ -4976,7 +4976,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 1
+  moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 0
   randomSeed: 0
@@ -9696,9 +9696,9 @@ GameObject:
   - component: {fileID: 6116856448848303058}
   - component: {fileID: 7452044655627348474}
   - component: {fileID: 6544201339514652033}
-  - component: {fileID: 4527935941333648625}
+  - component: {fileID: -7367098602838428473}
   m_Layer: 0
-  m_Name: Card
+  m_Name: LON_Card
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9877,7 +9877,7 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
---- !u!114 &4527935941333648625
+--- !u!114 &-7367098602838428473
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

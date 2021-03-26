@@ -166,6 +166,12 @@ public class CardThrowing : MonoBehaviour
 
         while (time < duration)
         {
+            if (_target == null)
+            {
+                Destroy(_go);
+                yield break;
+            }
+
             if (time < aceSlowMotionDuration)
             {
                 canCombo = true;
@@ -215,14 +221,14 @@ public class CardThrowing : MonoBehaviour
             if (bestScore < Vector3.Dot((en.transform.position - Camera.main.transform.position).normalized, Camera.main.transform.forward.normalized))
             {
                 bestScore = Vector3.Dot((en.transform.position - Camera.main.transform.position).normalized, Camera.main.transform.forward.normalized);
-                if (target != null && en != target) Methods.SetMaterialColor(target, Color.white);
+                //if (target != null && en != target) Methods.SetMaterialColor(target, Color.white);
                 currentBest = en;
             }
         }
 
-        if (target != null && currentBest == null) Methods.SetMaterialColor(target, Color.white);
+        //if (target != null && currentBest == null) Methods.SetMaterialColor(target, Color.white);
 
-        Methods.SetMaterialColor(currentBest, Color.red);
+        //Methods.SetMaterialColor(currentBest, Color.red);
         return currentBest;
     }
 
