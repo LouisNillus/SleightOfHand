@@ -16,6 +16,9 @@ public class Player : MonoBehaviour
     public float attackCD;
     float attackCDProgress;
 
+    [Range(0,1)]
+    public float animationCalibration;
+
     [HideInInspector] public UnityEvent OnDead;
 
     private void Awake()
@@ -23,13 +26,13 @@ public class Player : MonoBehaviour
         instance = this;
     }
 
-    // Start is called before the first frame update
+    // Start
     void Start()
     {
         animator = this.GetComponent<Animator>();
     }
 
-    // Update is called once per frame
+    // Update
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.C) && canSlide == true)
@@ -41,27 +44,37 @@ public class Player : MonoBehaviour
         {
             if(attackCDProgress == 0f)
             {
-                StartCoroutine(ThrowCardCoroutine());
+                StartCoroutine(ThrowCooldown());
+                StartCoroutine(ThrowDelayed(animationCalibration));
+            }
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (CardThrowing.instance.canCombo)
+            {
+                CardThrowing.instance.forceAceLeftClick = CardThrowing.instance.forceAceRightClick;
+                StartCoroutine(ThrowCooldown());           
+                StartCoroutine(ThrowDelayed(animationCalibration));
             }
         }
 
         OnDeadTrigger();
     }
 
-    public IEnumerator ThrowCardCoroutine()
-    {
+    public IEnumerator ThrowCooldown()
+    {       
         while(attackCDProgress < attackCD)
         {
             attackCDProgress += Time.deltaTime;
             yield return null;
         }
-
-        animator.SetTrigger("ThrowCards");
         attackCDProgress = 0f;
     }
 
-    public void ThrowCard()
+    public IEnumerator ThrowDelayed(float delay)
     {
+        animator.SetTrigger("ThrowCards");
+        yield return new WaitForSeconds(delay);
         CardThrowing.instance.ThrowCard();
     }
 
