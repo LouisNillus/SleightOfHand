@@ -234,7 +234,7 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
-    - Color_DB14E197: {r: 4.594794, g: 0, b: 1.2613161, a: 1}
+    - Color_DB14E197: {r: 2.9960785, g: 0, b: 0.83137256, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
