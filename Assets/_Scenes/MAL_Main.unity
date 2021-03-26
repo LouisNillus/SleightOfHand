@@ -213,18 +213,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355585e222edbaa469a82a74b97be169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
   HP: 100
+  damages: 0
   pathRefreshRate: 1
-  attackRangeFromEnemySize: 0
   chaseRange: 0
   attackRange: 2
+  triggerRange: 0
+  attackRangeFromEnemySize: 0
   attackCastDelay: 0.2
   attackCD: 0.5
   OnDead:
     m_PersistentCalls:
       m_Calls: []
-  damages: 0
+  OnTargetEnterInSight:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTargetEnterInRange:
+    m_PersistentCalls:
+      m_Calls: []
   target: {fileID: 0}
+  isAttacking: 0
+  animator: {fileID: 0}
 --- !u!195 &192977648
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -356,18 +366,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355585e222edbaa469a82a74b97be169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
   HP: 100
+  damages: 0
   pathRefreshRate: 1
-  attackRangeFromEnemySize: 0
   chaseRange: 0
   attackRange: 2
+  triggerRange: 0
+  attackRangeFromEnemySize: 0
   attackCastDelay: 0.2
   attackCD: 0.5
   OnDead:
     m_PersistentCalls:
       m_Calls: []
-  damages: 0
+  OnTargetEnterInSight:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTargetEnterInRange:
+    m_PersistentCalls:
+      m_Calls: []
   target: {fileID: 0}
+  isAttacking: 0
+  animator: {fileID: 0}
 --- !u!195 &251536634
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -608,18 +628,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355585e222edbaa469a82a74b97be169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
   HP: 100
+  damages: 0
   pathRefreshRate: 1
-  attackRangeFromEnemySize: 0
   chaseRange: 0
   attackRange: 2
+  triggerRange: 0
+  attackRangeFromEnemySize: 0
   attackCastDelay: 0.2
   attackCD: 0.5
   OnDead:
     m_PersistentCalls:
       m_Calls: []
-  damages: 0
+  OnTargetEnterInSight:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTargetEnterInRange:
+    m_PersistentCalls:
+      m_Calls: []
   target: {fileID: 0}
+  isAttacking: 0
+  animator: {fileID: 0}
 --- !u!195 &362380420
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -736,6 +766,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HP: 0
+  attackCD: 0
+  animationCalibration: 0
   OnDead:
     m_PersistentCalls:
       m_Calls: []
@@ -772,13 +804,19 @@ MonoBehaviour:
   B: {fileID: 1508963815}
   C: {fileID: 1498355215}
   target: {fileID: 0}
+  forceAceLeftClick: 0
+  forceAceRightClick: 0
+  aceProbability: 0
+  normalCardDamages: 0
   alignementThreshold: 0.5
   Bratio: 0
   Cratio: 0
+  aceSlowMotionDuration: 0
   duration: 0.5
   noise: 2
-  cardDamages: 0
+  lastCardType: 0
   cardPrefab: {fileID: 4990739776283089070, guid: 6f2d3a61136090645a534849bbc99d5f, type: 3}
+  aceOfSpades: {fileID: 0}
   enemies:
   - {fileID: 1270025353}
   - {fileID: 1980433222}
@@ -792,6 +830,7 @@ MonoBehaviour:
   - {fileID: 362380418}
   - {fileID: 1388123389}
   - {fileID: 1052275976}
+  canCombo: 0
 --- !u!4 &466786919
 Transform:
   m_ObjectHideFlags: 0
@@ -949,18 +988,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355585e222edbaa469a82a74b97be169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
   HP: 100
+  damages: 0
   pathRefreshRate: 1
-  attackRangeFromEnemySize: 0
   chaseRange: 0
   attackRange: 2
+  triggerRange: 0
+  attackRangeFromEnemySize: 0
   attackCastDelay: 0.2
   attackCD: 0.5
   OnDead:
     m_PersistentCalls:
       m_Calls: []
-  damages: 0
+  OnTargetEnterInSight:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTargetEnterInRange:
+    m_PersistentCalls:
+      m_Calls: []
   target: {fileID: 0}
+  isAttacking: 0
+  animator: {fileID: 0}
 --- !u!195 &482409459
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1092,18 +1141,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355585e222edbaa469a82a74b97be169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
   HP: 100
+  damages: 0
   pathRefreshRate: 1
-  attackRangeFromEnemySize: 0
   chaseRange: 0
   attackRange: 2
+  triggerRange: 0
+  attackRangeFromEnemySize: 0
   attackCastDelay: 0.2
   attackCD: 0.5
   OnDead:
     m_PersistentCalls:
       m_Calls: []
-  damages: 0
+  OnTargetEnterInSight:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTargetEnterInRange:
+    m_PersistentCalls:
+      m_Calls: []
   target: {fileID: 0}
+  isAttacking: 0
+  animator: {fileID: 0}
 --- !u!195 &517815763
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1330,18 +1389,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355585e222edbaa469a82a74b97be169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
   HP: 100
+  damages: 0
   pathRefreshRate: 1
-  attackRangeFromEnemySize: 0
   chaseRange: 0
   attackRange: 2
+  triggerRange: 0
+  attackRangeFromEnemySize: 0
   attackCastDelay: 0.2
   attackCD: 0.5
   OnDead:
     m_PersistentCalls:
       m_Calls: []
-  damages: 0
+  OnTargetEnterInSight:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTargetEnterInRange:
+    m_PersistentCalls:
+      m_Calls: []
   target: {fileID: 0}
+  isAttacking: 0
+  animator: {fileID: 0}
 --- !u!195 &595405700
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1843,18 +1912,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355585e222edbaa469a82a74b97be169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
   HP: 100
+  damages: 0
   pathRefreshRate: 1
-  attackRangeFromEnemySize: 0
   chaseRange: 0
   attackRange: 2
+  triggerRange: 0
+  attackRangeFromEnemySize: 0
   attackCastDelay: 0.2
   attackCD: 0.5
   OnDead:
     m_PersistentCalls:
       m_Calls: []
-  damages: 0
+  OnTargetEnterInSight:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTargetEnterInRange:
+    m_PersistentCalls:
+      m_Calls: []
   target: {fileID: 0}
+  isAttacking: 0
+  animator: {fileID: 0}
 --- !u!195 &927280708
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1986,18 +2065,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355585e222edbaa469a82a74b97be169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
   HP: 100
+  damages: 0
   pathRefreshRate: 1
-  attackRangeFromEnemySize: 0
   chaseRange: 0
   attackRange: 2
+  triggerRange: 0
+  attackRangeFromEnemySize: 0
   attackCastDelay: 0.2
   attackCD: 0.5
   OnDead:
     m_PersistentCalls:
       m_Calls: []
-  damages: 0
+  OnTargetEnterInSight:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTargetEnterInRange:
+    m_PersistentCalls:
+      m_Calls: []
   target: {fileID: 0}
+  isAttacking: 0
+  animator: {fileID: 0}
 --- !u!195 &1052275978
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2135,6 +2224,8 @@ VFXRenderer:
   m_Materials:
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2180,6 +2271,12 @@ VisualEffect:
       - m_Value: {x: 3.2918668, y: 0, z: 4.8365116, w: 1}
         m_Name: MainColor
         m_Overridden: 1
+      - m_Value: {x: 0.89245486, y: 0, z: 1.2263225, w: 1}
+        m_Name: FlashColor
+        m_Overridden: 1
+      - m_Value: {x: 1.4980392, y: 0, z: 0.41568628, w: 1}
+        m_Name: SparklesColor
+        m_Overridden: 1
     m_Uint:
       m_Array: []
     m_Int:
@@ -2202,7 +2299,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1118621532}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.315, z: -1.015}
+  m_LocalPosition: {x: -0.029, y: 0.94, z: -3.896}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2626,18 +2723,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355585e222edbaa469a82a74b97be169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
   HP: 100
+  damages: 0
   pathRefreshRate: 1
-  attackRangeFromEnemySize: 0
   chaseRange: 0
   attackRange: 2
+  triggerRange: 0
+  attackRangeFromEnemySize: 0
   attackCastDelay: 0.2
   attackCD: 0.5
   OnDead:
     m_PersistentCalls:
       m_Calls: []
-  damages: 0
+  OnTargetEnterInSight:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTargetEnterInRange:
+    m_PersistentCalls:
+      m_Calls: []
   target: {fileID: 0}
+  isAttacking: 0
+  animator: {fileID: 0}
 --- !u!195 &1270025359
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2738,18 +2845,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355585e222edbaa469a82a74b97be169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
   HP: 100
+  damages: 0
   pathRefreshRate: 1
-  attackRangeFromEnemySize: 0
   chaseRange: 0
   attackRange: 2
+  triggerRange: 0
+  attackRangeFromEnemySize: 0
   attackCastDelay: 0.2
   attackCD: 0.5
   OnDead:
     m_PersistentCalls:
       m_Calls: []
-  damages: 0
+  OnTargetEnterInSight:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTargetEnterInRange:
+    m_PersistentCalls:
+      m_Calls: []
   target: {fileID: 0}
+  isAttacking: 0
+  animator: {fileID: 0}
 --- !u!195 &1388123391
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2881,18 +2998,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355585e222edbaa469a82a74b97be169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
   HP: 100
+  damages: 0
   pathRefreshRate: 1
-  attackRangeFromEnemySize: 0
   chaseRange: 0
   attackRange: 2
+  triggerRange: 0
+  attackRangeFromEnemySize: 0
   attackCastDelay: 0.2
   attackCD: 0.5
   OnDead:
     m_PersistentCalls:
       m_Calls: []
-  damages: 0
+  OnTargetEnterInSight:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTargetEnterInRange:
+    m_PersistentCalls:
+      m_Calls: []
   target: {fileID: 0}
+  isAttacking: 0
+  animator: {fileID: 0}
 --- !u!195 &1481296687
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3089,18 +3216,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355585e222edbaa469a82a74b97be169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
   HP: 100
+  damages: 0
   pathRefreshRate: 1
-  attackRangeFromEnemySize: 0
   chaseRange: 0
   attackRange: 2
+  triggerRange: 0
+  attackRangeFromEnemySize: 0
   attackCastDelay: 0.2
   attackCD: 0.5
   OnDead:
     m_PersistentCalls:
       m_Calls: []
-  damages: 0
+  OnTargetEnterInSight:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTargetEnterInRange:
+    m_PersistentCalls:
+      m_Calls: []
   target: {fileID: 0}
+  isAttacking: 0
+  animator: {fileID: 0}
 --- !u!195 &1980433224
 NavMeshAgent:
   m_ObjectHideFlags: 0
