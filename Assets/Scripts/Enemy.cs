@@ -46,6 +46,10 @@ public class Enemy : MonoBehaviour
     bool isChasing = false;
 
     NavMeshAgent agent;
+    public Animator animator;
+
+    Vector3 currentPosition;
+    Vector3 lastPosition;
 
     IEnumerator attack;
     IEnumerator updatePath;
@@ -67,7 +71,7 @@ public class Enemy : MonoBehaviour
 
         //agent.stoppingDistance = attackRange * 1.5f;
 
-        OnDead.AddListener(Death);
+        //OnDead.AddListener(Death);
 
         StartCoroutine(UpdatePath(pathRefreshRate));
     }
@@ -75,10 +79,19 @@ public class Enemy : MonoBehaviour
     // Update
     void Update()
     {
+        currentPosition = this.transform.position;
+
         Chase();
         Attack();
-
+        Movement();
         OnDeadTrigger();
+
+        lastPosition = currentPosition;
+    }
+
+    public void Movement()
+    {
+        animator.SetFloat("Speed", (transform.position - lastPosition).magnitude * 100f);
     }
 
 
@@ -96,6 +109,7 @@ public class Enemy : MonoBehaviour
 
         float timeToCast = 0f;
         float timeToCD = 0f;
+        float timeToRotate = 0f;
 
         while(timeToCast < attackCastDelay)
         {
@@ -104,6 +118,7 @@ public class Enemy : MonoBehaviour
             if (IsInAttackRange() == false) //Cancel l'attaque si la target sort de la range
             { 
                 agent.isStopped = false;
+                isAttacking = false;
                 yield break;
             }
 
@@ -112,6 +127,18 @@ public class Enemy : MonoBehaviour
         }
 
             agent.isStopped = false;
+
+
+        /*while (timeToRotate < 0.5f)
+        {
+
+
+            this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, Quaternion.LookRotation(-Player.instance.transform.forward), timeToRotate / 0.5f);
+            timeToRotate += Time.deltaTime;
+            yield return null;
+        }*/
+        animator.SetTrigger("Attack");
+
 
         if (IsInAttackRange()) target.GetComponent<Player>().TakeDamages(damages);
 
@@ -172,24 +199,32 @@ public class Enemy : MonoBehaviour
     }
     #endregion
 
-    public void Death()
+    public IEnumerator Death()
     {
-        CardThrowing.instance.enemies.Remove(this.gameObject);
+        yield return new WaitForSeconds(4f);
         Destroy(this.gameObject);
     }
 
     public void TakeDamages(int value)
     {
+        animator.SetTrigger("Hit");
         HP -= value;
     }
+
+    bool isdying;
     public void OnDeadTrigger()
     {
-        if (HP <= 0)
+        if (HP <= 0 && isdying == false)
         {
-            OnDead.Invoke();
+            isdying = true;
+            this.GetComponent<Collider>().enabled = false;
+            StopAllCoroutines();
+            animator.SetTrigger("Dead");
+            CardThrowing.instance.enemies.Remove(this.gameObject);
+            agent.isStopped = true;
+            StartCoroutine(Death());
         }
     }
-
 
 
     private void OnDrawGizmos()
@@ -216,6 +251,7 @@ public class Enemy : MonoBehaviour
 
         while (t < attractionDuration)
         {
+            
             foreach (var hitCollider in hitColliders)
             {
                 if (hitCollider.gameObject.GetComponent<Enemy>() && hitCollider.gameObject != this.gameObject)
@@ -226,7 +262,7 @@ public class Enemy : MonoBehaviour
             yield return null;
             t += Time.deltaTime;
         }
-    }    
+    }
 }
 
 

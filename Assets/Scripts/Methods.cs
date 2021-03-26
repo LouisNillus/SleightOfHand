@@ -98,6 +98,8 @@ public static class Methods
     
     public static void SetMaterialColor(GameObject go, Color value)
     {
+        if (go.GetComponent<MeshRenderer>() == null) return;
+
         MaterialPropertyBlock matProp = new MaterialPropertyBlock();
         matProp.SetColor("_BaseColor", value); //HDRP
         //matProp.SetColor("_Color", value); //NON HDRP
@@ -170,7 +172,6 @@ public static class Methods
     {
         return new Vector2(vv.y, vv.z);
     }
-
 
     public static float FlatDistanceTo(this Vector3 from, Vector3 to)
     {
