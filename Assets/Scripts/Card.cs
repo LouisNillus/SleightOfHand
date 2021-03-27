@@ -64,17 +64,17 @@ public class Card : MonoBehaviour, IPlayable
 
     public void Play(Enemy en)
     {
-
+        CardsRules cr = CardThrowing.instance.rules;
         //GameManager.instance.StartCoroutine(GameManager.instance.TimedSlowMotion(0.75f));
         switch(typeOfCard)
         {
             case CardType.Any:
                 break;
             case CardType.Spades:
-                GameManager.instance.StartCoroutine(Spades(en.gameObject, 1f, 10f, 2f, 4f, 15, -1f));
+                GameManager.instance.StartCoroutine(Spades(en.gameObject, cr.spadesCastDelay, cr.spadesDistance, cr.spadesEffectDuration, cr.spadesRange, cr.spadesDamages, -1f));
                 break;
             case CardType.Heart:
-                GameManager.instance.StartCoroutine(Heart(en.gameObject, 0.5f, 0.35f, 20f));
+                GameManager.instance.StartCoroutine(Heart(en.gameObject, cr.heartCastDelay, cr.heartDuration, cr.heartRange));
                 break;
             case CardType.Diamond:
                 GameManager.instance.StartCoroutine(Diamond(en.gameObject, (3f)));
