@@ -161,7 +161,7 @@ public class Enemy : MonoBehaviour
         animator.SetTrigger("Attack");
 
 
-        if (IsInAttackRange()) target.GetComponent<Player>().TakeDamages(damages);
+        if (IsInAttackRange() && target.GetComponent<Player>().HP > 0) target.GetComponent<Player>().TakeDamages(damages);
 
         while(timeToCD <= attackCD)
         {

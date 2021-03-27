@@ -20,13 +20,14 @@ MonoBehaviour:
   spadesDamages: 50
   heartCastDelay: 0.5
   heartRange: 4
-  heartDistance: 2
-  heartDuration: 0
+  heartDistance: 3.32
+  heartEffectDuration: 1.02
   heartDamages: 30
   diamondRange: 0.5
   diamondDamages: 30
   diamondEffectDuration: 5
   clubsCastDelay: 0.5
   clubsRange: 3
-  clubsPushingDistance: 0
+  clubsPushingDistance: 5.61
+  clubsEffectDuration: 1
   clubsDamages: 30
