@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab09eff7dd5fc6242b537cdf099eefff, type: 3}
+  m_Name: New Rules
+  m_EditorClassIdentifier: 
+  comboRangeMultiplier: 2
+  spadesCastDelay: 0.5
+  spadesRange: 2
+  spadesDistance: 0
+  spadesEffectDuration: 0
+  spadesDamages: 50
+  heartCastDelay: 0.5
+  heartRange: 4
+  heartDistance: 0
+  heartDuration: 0
+  heartDamages: 30
+  diamondRange: 0.5
+  diamondDamages: 30
+  diamondEffectDuration: 5
+  clubsCastDelay: 0.5
+  clubsRange: 0
+  clubsPushingDistance: 0
+  clubsDamages: 30

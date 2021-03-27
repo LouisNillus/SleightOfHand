@@ -6,6 +6,8 @@ public class CardThrowing : MonoBehaviour
 {
     public static CardThrowing instance;
 
+    public CardsRules rules;
+
     public Transform cardOrigin;
     public Transform B;
     public Transform C;
