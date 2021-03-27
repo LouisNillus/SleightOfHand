@@ -2823,7 +2823,7 @@ Transform:
   m_Children:
   - {fileID: 679864179}
   m_Father: {fileID: 0}
-  m_RootOrder: 25
+  m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &402124993
 GameObject:
@@ -4338,7 +4338,7 @@ Transform:
   m_Children:
   - {fileID: 483997241}
   m_Father: {fileID: 0}
-  m_RootOrder: 26
+  m_RootOrder: 25
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &941371862
 GameObject:
@@ -6180,67 +6180,6 @@ VisualEffect:
       m_Array: []
     m_Bool:
       m_Array: []
---- !u!1001 &1397144506
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 964155450357921680, guid: f3d9991e63a28b34cb0cdd2cb20a10ba, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 964155450357921682, guid: f3d9991e63a28b34cb0cdd2cb20a10ba, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 17.45
-      objectReference: {fileID: 0}
-    - target: {fileID: 964155450357921682, guid: f3d9991e63a28b34cb0cdd2cb20a10ba, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.025
-      objectReference: {fileID: 0}
-    - target: {fileID: 964155450357921682, guid: f3d9991e63a28b34cb0cdd2cb20a10ba, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 17.31
-      objectReference: {fileID: 0}
-    - target: {fileID: 964155450357921682, guid: f3d9991e63a28b34cb0cdd2cb20a10ba, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 964155450357921682, guid: f3d9991e63a28b34cb0cdd2cb20a10ba, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 964155450357921682, guid: f3d9991e63a28b34cb0cdd2cb20a10ba, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 964155450357921682, guid: f3d9991e63a28b34cb0cdd2cb20a10ba, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 964155450357921682, guid: f3d9991e63a28b34cb0cdd2cb20a10ba, type: 3}
-      propertyPath: m_RootOrder
-      value: 24
-      objectReference: {fileID: 0}
-    - target: {fileID: 964155450357921682, guid: f3d9991e63a28b34cb0cdd2cb20a10ba, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 964155450357921682, guid: f3d9991e63a28b34cb0cdd2cb20a10ba, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 964155450357921682, guid: f3d9991e63a28b34cb0cdd2cb20a10ba, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 964155450357921775, guid: f3d9991e63a28b34cb0cdd2cb20a10ba, type: 3}
-      propertyPath: m_Name
-      value: ClubsVFX
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: f3d9991e63a28b34cb0cdd2cb20a10ba, type: 3}
 --- !u!1 &1498355214
 GameObject:
   m_ObjectHideFlags: 0

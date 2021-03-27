@@ -15,18 +15,18 @@ MonoBehaviour:
   comboRangeMultiplier: 2
   spadesCastDelay: 0.5
   spadesRange: 2
-  spadesDistance: 0
-  spadesEffectDuration: 0
+  spadesDistance: 3
+  spadesEffectDuration: 1
   spadesDamages: 50
   heartCastDelay: 0.5
   heartRange: 4
-  heartDistance: 0
+  heartDistance: 2
   heartDuration: 0
   heartDamages: 30
   diamondRange: 0.5
   diamondDamages: 30
   diamondEffectDuration: 5
   clubsCastDelay: 0.5
-  clubsRange: 0
+  clubsRange: 3
   clubsPushingDistance: 0
   clubsDamages: 30

@@ -171,7 +171,7 @@ public class CardThrowing : MonoBehaviour
         //Target reached :
         if(combo.Item1 != CardType.Any && combo.Item2 != CardType.Any)
         {
-            Debug.Log("wow");
+            Debug.Log("Combo" + combo.Item1.ToString() + " " + combo.Item2.ToString());
             card.Combo(combo, _target.GetComponent<Enemy>());
             ResetCombo();
         }

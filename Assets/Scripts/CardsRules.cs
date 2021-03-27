@@ -29,7 +29,7 @@ public class CardsRules : ScriptableObject
     [Range(0, 10)]
     public float heartDistance;
     [Range(0, 10)]
-    public float heartDuration;
+    public float heartEffectDuration;
     [Range(0, 100)]
     public int heartDamages;
 
@@ -48,6 +48,8 @@ public class CardsRules : ScriptableObject
     public float clubsRange;
     [Range(0, 10)]
     public float clubsPushingDistance;
+    [Range(0, 10)]
+    public float clubsEffectDuration;
     [Range(0, 100)]
     public int clubsDamages;
 

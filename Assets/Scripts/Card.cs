@@ -16,6 +16,7 @@ public class Card : MonoBehaviour, IPlayable
     public (CardType, CardType) combo;
 
     MeshRenderer mr;
+    CardsRules cr;
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +26,7 @@ public class Card : MonoBehaviour, IPlayable
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void Initialize()
@@ -38,6 +39,7 @@ public class Card : MonoBehaviour, IPlayable
     public void GenerateCard()
     {
         mr = this.GetComponent<MeshRenderer>();
+        cr = CardThrowing.instance.rules;
         int rand = Random.Range(0, 100);
 
 
@@ -56,17 +58,16 @@ public class Card : MonoBehaviour, IPlayable
         }
 
         if (CardThrowing.instance.forceAceLeftClick != CardType.Any) typeOfCard = CardThrowing.instance.forceAceLeftClick;
-        
-        Debug.Log(typeOfCard);
+
+        //Debug.Log(typeOfCard);
 
     }
 
 
     public void Play(Enemy en)
     {
-        CardsRules cr = CardThrowing.instance.rules;
         //GameManager.instance.StartCoroutine(GameManager.instance.TimedSlowMotion(0.75f));
-        switch(typeOfCard)
+        switch (typeOfCard)
         {
             case CardType.Any:
                 break;
@@ -74,33 +75,83 @@ public class Card : MonoBehaviour, IPlayable
                 GameManager.instance.StartCoroutine(Spades(en.gameObject, cr.spadesCastDelay, cr.spadesDistance, cr.spadesEffectDuration, cr.spadesRange, cr.spadesDamages, -1f));
                 break;
             case CardType.Heart:
-                GameManager.instance.StartCoroutine(Heart(en.gameObject, cr.heartCastDelay, cr.heartDuration, cr.heartRange));
+                GameManager.instance.StartCoroutine(Heart(en.gameObject, cr.heartCastDelay, cr.heartEffectDuration, cr.heartRange));
                 break;
             case CardType.Diamond:
-                GameManager.instance.StartCoroutine(Diamond(en.gameObject, (3f)));
+                GameManager.instance.StartCoroutine(Diamond(en.gameObject, cr.diamondEffectDuration, cr.diamondDamages));
                 break;
             case CardType.Clubs:
-                GameManager.instance.StartCoroutine(Clubs(en.gameObject, 0.5f, 0.25f, 10f, 5f));
+                GameManager.instance.StartCoroutine(Clubs(en.gameObject, cr.clubsCastDelay, cr.clubsEffectDuration, cr.clubsRange, cr.clubsPushingDistance));
                 break;
         }
     }
 
     public void Combo((CardType, CardType) combo, Enemy en)
     {
-
-        switch(combo.Item1)
+        switch (combo.Item1)
         {
-            case (CardType.Clubs):
-                switch(combo.Item2)
+            case (CardType.Spades):
+
+                switch (combo.Item2)
                 {
+                    case CardType.Spades:
+                        break;
+                    case CardType.Heart:
+                        break;
                     case CardType.Diamond:
-                        GameManager.instance.StartCoroutine(Diamond(en.gameObject, (3f)));
-                        GameManager.instance.StartCoroutine(Clubs(en.gameObject, 0.5f, 0.25f, 10f, 5f));                                             
-                    break;
+                        break;
+                    case CardType.Clubs:
+                        break;
                 }
                 break;
-            case (CardType.Heart):
 
+            case (CardType.Heart):
+                switch (combo.Item2)
+                {
+                    case CardType.Spades:
+                        break;
+                    case CardType.Heart:
+                        DoubleHeart(en);
+                        break;
+                    case CardType.Diamond:
+                        break;
+                    case CardType.Clubs:
+                        HeartClubs(en);
+                        break;
+                }
+                break;
+
+            case (CardType.Diamond):
+                switch (combo.Item2)
+                {
+                    case CardType.Spades:
+                        break;
+                    case CardType.Heart:
+                        break;
+                    case CardType.Diamond:
+                        DoubleDiamond(en);
+                        break;
+                    case CardType.Clubs:
+                        break;
+                }
+                break;
+
+            case (CardType.Clubs):
+                switch (combo.Item2)
+                {
+                    case CardType.Spades:
+                        break;
+                    case CardType.Heart:
+                        HeartClubs(en);
+                        break;
+                    case CardType.Diamond:
+                        GameManager.instance.StartCoroutine(Diamond(en.gameObject, cr.diamondEffectDuration, cr.diamondDamages));
+                        GameManager.instance.StartCoroutine(Clubs(en.gameObject, cr.clubsCastDelay, cr.clubsEffectDuration, cr.clubsRange, cr.clubsPushingDistance));
+                        break;
+                    case CardType.Clubs:
+                        DoubleClubs(en);
+                        break;
+                }
                 break;
         }
     }
@@ -112,7 +163,7 @@ public class Card : MonoBehaviour, IPlayable
         Collider[] hitColliders = Physics.OverlapSphere(launcher.transform.position, range);
 
         List<Vector3> pos = new List<Vector3>();
-        List<GameObject> enemies = new List<GameObject>();      
+        List<GameObject> enemies = new List<GameObject>();
 
         foreach (var hitCollider in hitColliders)
         {
@@ -134,11 +185,13 @@ public class Card : MonoBehaviour, IPlayable
             t += Time.deltaTime;
         }
     }
-    public IEnumerator Diamond(GameObject target, float duration)
+    public IEnumerator Diamond(GameObject target, float duration, int damages)
     {
         float time = 0f;
 
         NavMeshAgent agent = target.GetComponent<NavMeshAgent>();
+
+        target.GetComponent<Enemy>().TakeDamages(damages);
 
         while (time < duration)
         {
@@ -148,7 +201,6 @@ public class Card : MonoBehaviour, IPlayable
         }
         agent.isStopped = false;
     }
-
     public IEnumerator Spades(GameObject target, float castDelay, float length, float duration, float damageRange, int damages, float heightOffset = 0f)
     {
         float time = 0f;
@@ -161,7 +213,7 @@ public class Card : MonoBehaviour, IPlayable
         go.transform.rotation = Quaternion.LookRotation(direction);
         go.transform.localEulerAngles = go.transform.localEulerAngles.ChangeX(90);
 
-        while(time < castDelay)
+        while (time < castDelay)
         {
             time += Time.deltaTime;
             yield return null;
@@ -183,7 +235,7 @@ public class Card : MonoBehaviour, IPlayable
 
             Collider[] hitColliders = Physics.OverlapSphere(go.transform.position, damageRange);
 
-            foreach(var hitCollider in hitColliders)
+            foreach (var hitCollider in hitColliders)
             {
                 if (hit.Contains(hitCollider.gameObject) == false && hitCollider.GetComponent<Enemy>())
                 {
@@ -198,7 +250,6 @@ public class Card : MonoBehaviour, IPlayable
 
         go.GetComponent<UnityEngine.VFX.VisualEffect>().Stop();
     }
-
     public IEnumerator Heart(GameObject launcher, float castDelay, float attractionDuration, float range, float heightOffset = 0f)
     {
         GameObject go = Instantiate(CardThrowing.instance.aceOfHeart, launcher.transform.position.ChangeY(launcher.transform.position.y + heightOffset), Quaternion.identity);
@@ -207,7 +258,7 @@ public class Card : MonoBehaviour, IPlayable
         go.transform.rotation = Quaternion.LookRotation(direction);
         go.transform.localEulerAngles = go.transform.localEulerAngles.ChangeX(0);
 
-            yield return new WaitForSeconds(castDelay);
+        yield return new WaitForSeconds(castDelay);
 
         Collider[] hitColliders = Physics.OverlapSphere(launcher.transform.position, range);
 
@@ -228,16 +279,10 @@ public class Card : MonoBehaviour, IPlayable
 
         float t = 0f;
 
-
-
         while (t < attractionDuration)
         {
             for (int i = 0; i < pos.Count; i++)
             {
-                Debug.Log(finalPos[i]);
-                Debug.DrawLine(finalPos[i], pos[i], Color.yellow);
-                Debug.Break();
-
                 enemies[i].transform.position = Vector3.Lerp(pos[i], finalPos[i], CardThrowing.instance.easing.Evaluate(t / attractionDuration));
             }
             yield return null;
@@ -245,9 +290,63 @@ public class Card : MonoBehaviour, IPlayable
         }
     }
 
+    public void DoubleClubs(Enemy en)
+    {
+        GameManager.instance.StartCoroutine(Clubs(en.gameObject, cr.clubsCastDelay, cr.clubsEffectDuration, cr.clubsRange*2, cr.clubsPushingDistance));
+    }
+
+    public void DoubleDiamond(Enemy en)
+    {
+        GameManager.instance.StartCoroutine(Diamond(en.gameObject, cr.diamondEffectDuration, cr.diamondDamages));
+    }
+
+    public void DoubleSpades(Enemy en)
+    {
+        GameManager.instance.StartCoroutine(Spades(en.gameObject, cr.spadesCastDelay, cr.spadesDistance, cr.spadesEffectDuration, cr.spadesRange*2, cr.spadesDamages, -1f));
+    }
+
+    public void DoubleHeart(Enemy en)
+    {
+        GameManager.instance.StartCoroutine(Heart(en.gameObject, cr.heartCastDelay, cr.heartEffectDuration, cr.heartRange*2));
+    }
+
+    public IEnumerator SpadesHeart(GameObject target, float castDelay, float length, float duration, float damageRange, int damages, float heightOffset = 0f)
+    {
+
+        yield return null;
+    }
+    public IEnumerator SpadesDiamond()
+    {
+        yield return null;
+    }
+    public IEnumerator SpadesClubs()
+    {
+        yield return null;
+
+    }
+
+    public IEnumerator HeartDiamond()
+    {
+        yield return null;
+
+    }
+
+    public IEnumerator HeartClubs(Enemy en)
+    {
+        GameManager.instance.StartCoroutine(Heart(en.gameObject, cr.heartCastDelay, cr.heartEffectDuration, cr.heartRange));
+        yield return new WaitForSeconds(cr.heartEffectDuration + cr.heartCastDelay);
+        GameManager.instance.StartCoroutine(Clubs(en.gameObject, cr.clubsCastDelay, cr.clubsEffectDuration, cr.clubsRange, cr.clubsPushingDistance));
+    }
+
+    public IEnumerator DiamondClubs()
+    {
+        yield return null;
+
+    }
+
 }
 
-public enum CardType {Spades, Heart, Diamond, Clubs, Any}
+public enum CardType { Spades, Heart, Diamond, Clubs, Any }
 
 public interface IPlayable
 {
