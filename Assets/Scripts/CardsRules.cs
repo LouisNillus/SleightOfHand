@@ -8,6 +8,8 @@ public class CardsRules : ScriptableObject
     [Header("General")]
     [Range(0, 4)]
     public int comboRangeMultiplier;
+    [Range(0, 50)]
+    public int normalCardDamages;
 
     [Header("Ace of Spades")]
     [Range(0, 2)]

@@ -46,6 +46,7 @@ public class Enemy : MonoBehaviour
 
 
     public GameObject target;
+    public SkinnedMeshRenderer mr;
     public bool isAttacking = false;
     bool isChasing = false;
 
@@ -222,7 +223,9 @@ public class Enemy : MonoBehaviour
 
     public IEnumerator Death()
     {
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(DissolveToDeath(2f));
+        yield return new WaitForSeconds(2f);
         Destroy(this.gameObject);
     }
 
@@ -254,6 +257,24 @@ public class Enemy : MonoBehaviour
         Gizmos.DrawLine(Methods.ChangeY(transform.position, transform.position.y - (transform.localScale.y / 2)), Methods.ChangeX(Methods.ChangeY(transform.position, transform.position.y - (transform.localScale.y / 2)), transform.position.x + attackRange));
         Gizmos.color = Color.red;
         Gizmos.DrawLine(Methods.ChangeY(transform.position, transform.position.y - (transform.localScale.y / 2)), Methods.ChangeX(Methods.ChangeY(transform.position, transform.position.y - (transform.localScale.y / 2)), transform.position.x + triggerRange));
+    }
+
+    public IEnumerator DissolveToDeath(float duration)
+    {
+        float t = 0f;
+
+        while( t < duration)
+        {
+            foreach (Material m in mr.materials)
+            {
+                MaterialPropertyBlock mpb = new MaterialPropertyBlock();
+                m.SetFloat("_alphaClipDissolve", Mathf.Lerp(0f, 1f, (t / duration)));
+                mpb.SetFloat("_alphaClipDissolve", Mathf.Lerp(0f, 1f, (t / duration)));
+                mr.SetPropertyBlock(mpb);
+            }
+            t += Time.deltaTime;
+            yield return null;
+        }
     }
 }
 

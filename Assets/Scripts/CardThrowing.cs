@@ -21,8 +21,6 @@ public class CardThrowing : MonoBehaviour
     [Header("Cards Data")]
     [Range(0,100)]
     public int aceProbability;
-    [Range(0,100)]
-    public int normalCardDamages;
 
     [Header("Aiming Settings")]
     [Range(-1,1)]
@@ -99,8 +97,6 @@ public class CardThrowing : MonoBehaviour
             C.position = Vector3.Lerp(cardOrigin.position, target.transform.position, Cratio);
 
             StartCoroutine(Interpolate(go, target, duration, (combo.Item1 != CardType.Any && combo.Item2 != CardType.Any)));
-
-            target.GetComponent<Enemy>().TakeDamages(normalCardDamages);
         }
     }
 
@@ -137,6 +133,7 @@ public class CardThrowing : MonoBehaviour
         if (card.isAnAce)
         {
             GameManager.instance.StartCoroutine(GameManager.instance.TimedSlowMotion(aceSlowMotionDuration));
+            Player.instance.StartCoroutine(Player.instance.CanComboFeedback());
         }
 
         lastCardType = card.typeOfCard;

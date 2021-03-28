@@ -70,6 +70,7 @@ public class Card : MonoBehaviour, IPlayable
         switch (typeOfCard)
         {
             case CardType.Any:
+                en.TakeDamages(cr.normalCardDamages);
                 break;
             case CardType.Spades:
                 GameManager.instance.StartCoroutine(Spades(en.gameObject, cr.spadesCastDelay, cr.spadesDistance, cr.spadesEffectDuration, cr.spadesRange, cr.spadesDamages, -1f));

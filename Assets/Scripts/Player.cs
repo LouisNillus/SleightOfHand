@@ -89,7 +89,7 @@ public class Player : MonoBehaviour
     public Volume m_Volume;
     Vignette vig;
 
-public IEnumerator Slide()
+    public IEnumerator Slide()
     {
         canSlide = false;
         float cameraSmooth = 0f;
@@ -145,6 +145,31 @@ public IEnumerator Slide()
         {
             vig.color.value = Color.Lerp(Color.red, Color.black, t/0.75f);
             vig.intensity.value = Mathf.Lerp(intensity, 0.18f, t/0.75f);
+            t += Time.deltaTime;
+            yield return null;
+        }
+    }
+
+    public IEnumerator CanComboFeedback()
+    {
+        VolumeProfile profile = m_Volume.sharedProfile;
+        Vignette vignette;
+
+        if (profile.TryGet<Vignette>(out vignette))
+        {
+            vig = vignette;
+        }
+
+        vig.color.value = Color.yellow;
+        vig.intensity.value = (0.3f);
+
+        float intensity = vig.intensity.value;
+
+        float t = 0f;
+        while (t < 0.75f)
+        {
+            vig.color.value = Color.Lerp(Color.yellow, Color.black, t / 0.75f);
+            vig.intensity.value = Mathf.Lerp(intensity, 0.18f, t / 0.75f);
             t += Time.deltaTime;
             yield return null;
         }
