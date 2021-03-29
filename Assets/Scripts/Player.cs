@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.Events;
 using Invector.vCharacterController;
 
@@ -15,11 +17,15 @@ public class Player : MonoBehaviour
     public int HP;
     public float attackCD;
     float attackCDProgress;
+    bool isDying;
+    vThirdPersonController controller;
 
     [Range(0,1)]
     public float animationCalibration;
 
     [HideInInspector] public UnityEvent OnDead;
+
+    IEnumerator damagesFeedback;
 
     private void Awake()
     {
@@ -29,6 +35,8 @@ public class Player : MonoBehaviour
     // Start
     void Start()
     {
+        damagesFeedback = DamagesFeedback();
+        controller = this.GetComponent<vThirdPersonController>();
         animator = this.GetComponent<Animator>();
     }
 
@@ -61,6 +69,12 @@ public class Player : MonoBehaviour
         OnDeadTrigger();
     }
 
+    public void Shoot(CardType cardType = CardType.Any)
+    {
+        StartCoroutine(ThrowCooldown());
+        StartCoroutine(ThrowDelayed(animationCalibration, cardType));
+    }
+
     public IEnumerator ThrowCooldown()
     {       
         while(attackCDProgress < attackCD)
@@ -71,12 +85,15 @@ public class Player : MonoBehaviour
         attackCDProgress = 0f;
     }
 
-    public IEnumerator ThrowDelayed(float delay)
+    public IEnumerator ThrowDelayed(float delay, CardType cardType = CardType.Any)
     {
         animator.SetTrigger("ThrowCards");
         yield return new WaitForSeconds(delay);
-        CardThrowing.instance.ThrowCard();
+        CardThrowing.instance.ThrowCard(cardType);
     }
+
+    public Volume m_Volume;
+    Vignette vig;
 
     public IEnumerator Slide()
     {
@@ -109,11 +126,71 @@ public class Player : MonoBehaviour
     public void TakeDamages(int value)
     {
         HP -= value;
+
+        StopCoroutine(damagesFeedback);
+        StartCoroutine(DamagesFeedback());
+    }
+
+    public IEnumerator DamagesFeedback()
+    {
+        VolumeProfile profile = m_Volume.sharedProfile;
+        Vignette vignette;
+
+        if (profile.TryGet<Vignette>(out vignette))
+        {
+            vig = vignette;
+        }
+
+        vig.color.value = Color.red;
+        vig.intensity.value = ((-0.008f * HP + 0.8f));
+
+        float intensity = vig.intensity.value;
+
+        float t = 0f;
+        while(t < 0.75f)
+        {
+            vig.color.value = Color.Lerp(Color.red, Color.black, t/0.75f);
+            vig.intensity.value = Mathf.Lerp(intensity, 0.18f, t/0.75f);
+            t += Time.deltaTime;
+            yield return null;
+        }
+    }
+
+    public IEnumerator CanComboFeedback()
+    {
+        VolumeProfile profile = m_Volume.sharedProfile;
+        Vignette vignette;
+
+        if (profile.TryGet<Vignette>(out vignette))
+        {
+            vig = vignette;
+        }
+
+        vig.color.value = Color.yellow;
+        vig.intensity.value = (0.3f);
+
+        float intensity = vig.intensity.value;
+
+        float t = 0f;
+        while (t < 0.75f)
+        {
+            vig.color.value = Color.Lerp(Color.yellow, Color.black, t / 0.75f);
+            vig.intensity.value = Mathf.Lerp(intensity, 0.18f, t / 0.75f);
+            t += Time.deltaTime;
+            yield return null;
+        }
     }
 
     public void OnDeadTrigger()
     {
-        if (HP <= 0) OnDead.Invoke();
+        if (HP <= 0 && isDying == false)
+        {
+            isDying = true;
+            animator.SetTrigger("Dead");
+            controller.lockMovement = true;
+            controller.lockRotation = true;
+            OnDead.Invoke();
+        }
     }
 
 }

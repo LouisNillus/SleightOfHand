@@ -36,12 +36,17 @@ public class Enemy : MonoBehaviour
     [Range(0,5)]
     public float attackCD = 0f;
 
+    [Header("Behaviour")]
+    [Range(0, 10)]
+    public float lookPlayerRotationSpeed;
+
     [HideInInspector] public UnityEvent OnDead;
     [HideInInspector] public UnityEvent OnTargetEnterInSight;
     [HideInInspector] public UnityEvent OnTargetEnterInRange;
 
 
     public GameObject target;
+    public SkinnedMeshRenderer mr;
     public bool isAttacking = false;
     bool isChasing = false;
 
@@ -84,7 +89,10 @@ public class Enemy : MonoBehaviour
         Chase();
         Attack();
         Movement();
+        Rotation();
         OnDeadTrigger();
+
+
 
         lastPosition = currentPosition;
     }
@@ -94,6 +102,17 @@ public class Enemy : MonoBehaviour
         animator.SetFloat("Speed", (transform.position - lastPosition).magnitude * 100f);
     }
 
+    public void Rotation()
+    {
+        if(target != null)
+        {
+            Vector3 _direction = (target.transform.position - transform.position).normalized;
+            Quaternion _lookRotation = Quaternion.LookRotation(_direction);
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime * lookPlayerRotationSpeed);
+        }
+
+    }
 
     #region Attack
     public void Attack()
@@ -129,18 +148,21 @@ public class Enemy : MonoBehaviour
             agent.isStopped = false;
 
 
-        /*while (timeToRotate < 0.5f)
+
+
+        while (timeToRotate < 0.5f)
         {
 
 
-            this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, Quaternion.LookRotation(-Player.instance.transform.forward), timeToRotate / 0.5f);
             timeToRotate += Time.deltaTime;
             yield return null;
-        }*/
+        }
+
+
         animator.SetTrigger("Attack");
 
 
-        if (IsInAttackRange()) target.GetComponent<Player>().TakeDamages(damages);
+        if (IsInAttackRange() && target.GetComponent<Player>().HP > 0) target.GetComponent<Player>().TakeDamages(damages);
 
         while(timeToCD <= attackCD)
         {
@@ -201,7 +223,9 @@ public class Enemy : MonoBehaviour
 
     public IEnumerator Death()
     {
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(DissolveToDeath(2f));
+        yield return new WaitForSeconds(2f);
         Destroy(this.gameObject);
     }
 
@@ -235,32 +259,21 @@ public class Enemy : MonoBehaviour
         Gizmos.DrawLine(Methods.ChangeY(transform.position, transform.position.y - (transform.localScale.y / 2)), Methods.ChangeX(Methods.ChangeY(transform.position, transform.position.y - (transform.localScale.y / 2)), transform.position.x + triggerRange));
     }
 
-    public IEnumerator Attract(float castDelay, float attractionDuration, float range)
+    public IEnumerator DissolveToDeath(float duration)
     {
         float t = 0f;
-        while(t < castDelay)
+
+        while( t < duration)
         {
-            t += Time.deltaTime;
-            yield return null;
-        }
-
-
-        t = 0f;
-
-        Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, range);
-
-        while (t < attractionDuration)
-        {
-            
-            foreach (var hitCollider in hitColliders)
+            foreach (Material m in mr.materials)
             {
-                if (hitCollider.gameObject.GetComponent<Enemy>() && hitCollider.gameObject != this.gameObject)
-                {
-                    hitCollider.transform.position = Vector3.Lerp(hitCollider.transform.position, this.transform.position, (t/attractionDuration));
-                }
+                MaterialPropertyBlock mpb = new MaterialPropertyBlock();
+                m.SetFloat("_alphaClipDissolve", Mathf.Lerp(0f, 1f, (t / duration)));
+                mpb.SetFloat("_alphaClipDissolve", Mathf.Lerp(0f, 1f, (t / duration)));
+                mr.SetPropertyBlock(mpb);
             }
-            yield return null;
             t += Time.deltaTime;
+            yield return null;
         }
     }
 }
