@@ -29,18 +29,19 @@ public class Card : MonoBehaviour, IPlayable
 
     }
 
-    public void Initialize()
+    public void Initialize(CardType cardType = CardType.Any)
     {
-        GenerateCard();
+        GenerateCard(cardType);
         playerPosWhenThrown = CardThrowing.instance.transform.position;
         camPosWhenThrown = Camera.main.transform.forward;
     }
 
-    public void GenerateCard()
+    public void GenerateCard(CardType cardType = CardType.Any)
     {
         mr = this.GetComponent<MeshRenderer>();
         cr = CardThrowing.instance.rules;
         int rand = Random.Range(0, 100);
+
 
 
         if (rand > CardThrowing.instance.aceProbability)
@@ -57,7 +58,16 @@ public class Card : MonoBehaviour, IPlayable
             isAnAce = true;
         }
 
-        if (CardThrowing.instance.forceAceLeftClick != CardType.Any) typeOfCard = CardThrowing.instance.forceAceLeftClick;
+        if (cardType != CardType.Any)
+        {
+            mr.sharedMaterial = new Material(mr.sharedMaterial);
+            mr.sharedMaterial.SetColor("_BaseColor", Color.yellow);
+
+            typeOfCard = cardType;
+            isAnAce = true;
+        }
+
+       // if (CardThrowing.instance.forceAceLeftClick != CardType.Any) typeOfCard = CardThrowing.instance.forceAceLeftClick;
 
         //Debug.Log(typeOfCard);
 

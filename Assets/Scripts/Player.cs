@@ -69,6 +69,12 @@ public class Player : MonoBehaviour
         OnDeadTrigger();
     }
 
+    public void Shoot(CardType cardType = CardType.Any)
+    {
+        StartCoroutine(ThrowCooldown());
+        StartCoroutine(ThrowDelayed(animationCalibration, cardType));
+    }
+
     public IEnumerator ThrowCooldown()
     {       
         while(attackCDProgress < attackCD)
@@ -79,11 +85,11 @@ public class Player : MonoBehaviour
         attackCDProgress = 0f;
     }
 
-    public IEnumerator ThrowDelayed(float delay)
+    public IEnumerator ThrowDelayed(float delay, CardType cardType = CardType.Any)
     {
         animator.SetTrigger("ThrowCards");
         yield return new WaitForSeconds(delay);
-        CardThrowing.instance.ThrowCard();
+        CardThrowing.instance.ThrowCard(cardType);
     }
 
     public Volume m_Volume;
