@@ -3548,6 +3548,19 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &367765325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 367765316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 065c46f5ca8d91341ad98104e9621c8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldownDuration: 5
 --- !u!1 &402124993
 GameObject:
   m_ObjectHideFlags: 0
@@ -7813,6 +7826,7 @@ GameObject:
   - component: {fileID: 1503243114}
   - component: {fileID: 1503243113}
   - component: {fileID: 1503243112}
+  - component: {fileID: 1503243116}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -7903,6 +7917,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1503243116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1503243111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f617f48dd9b5e64694db4507c091169, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  armAce: {fileID: 21760274}
 --- !u!1 &1508963814
 GameObject:
   m_ObjectHideFlags: 0

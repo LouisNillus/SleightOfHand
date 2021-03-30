@@ -79,13 +79,13 @@ public class CardThrowing : MonoBehaviour
         
     }
 
-    public void ThrowCard()
+    public void ThrowCard(CardType cardType = CardType.Any)
     {
         if(target != null)
         {
             GameObject go = Instantiate(cardPrefab, cardOrigin.transform.position, Quaternion.identity);
             Card c = go.GetComponent<Card>();
-            c.Initialize();
+            c.Initialize(cardType);
 
             if (canCombo && c.typeOfCard != CardType.Any)
             {
