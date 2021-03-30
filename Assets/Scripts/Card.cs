@@ -206,6 +206,8 @@ public class Card : MonoBehaviour, IPlayable
 
         while (time < duration)
         {
+            if (target == null) yield break;
+
             agent.isStopped = true;
             time += Time.deltaTime;
             yield return null;

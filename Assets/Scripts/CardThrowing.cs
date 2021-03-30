@@ -51,6 +51,8 @@ public class CardThrowing : MonoBehaviour
     [HideInInspector] public List<GameObject> enemies = new List<GameObject>();
     public bool canCombo;
 
+    bool comboIsOver = true;
+
     private void Awake()
     {
         instance = this;
@@ -166,15 +168,17 @@ public class CardThrowing : MonoBehaviour
         if (skipCard) Destroy(_go);
 
         //Target reached :
-        if(combo.Item1 != CardType.Any && combo.Item2 != CardType.Any)
+        if(combo.Item1 != CardType.Any && combo.Item2 != CardType.Any && comboIsOver == true)
         {
             Debug.Log("Combo" + combo.Item1.ToString() + " " + combo.Item2.ToString());
             card.Combo(combo, _target.GetComponent<Enemy>());
+            comboIsOver = false;
             ResetCombo();
         }
         else
         {
             card.Play(_target.GetComponent<Enemy>());
+            comboIsOver = true;
         }
 
 

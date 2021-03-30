@@ -13,7 +13,15 @@ public class DoubleUp : Ability
     // Update is called once per frame
     void Update()
     {
-        
+        Double();
     }
 
+
+    public void Double()
+    {
+        if (Input.GetKeyDown(KeyCode.F) && CardThrowing.instance.lastCardType != CardType.Any && CardThrowing.instance.canCombo)
+        {
+            Player.instance.Shoot(CardThrowing.instance.lastCardType);
+        }
+    }
 }
