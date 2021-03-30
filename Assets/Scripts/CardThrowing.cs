@@ -47,6 +47,8 @@ public class CardThrowing : MonoBehaviour
 
     public GameObject aceOfSpades;
     public GameObject aceOfHeart;
+    public GameObject aceOfDiamond;
+    public GameObject aceOfClubs;
 
     [HideInInspector] public List<GameObject> enemies = new List<GameObject>();
     public bool canCombo;

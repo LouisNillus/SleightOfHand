@@ -140,7 +140,7 @@ public class Card : MonoBehaviour, IPlayable
                     case CardType.Heart:
                         break;
                     case CardType.Diamond:
-                        DoubleDiamond(en);
+                        GameManager.instance.StartCoroutine(DoubleDiamond(en.gameObject, cr.diamondEffectDuration, cr.diamondDoubleRange, cr.diamondDamages));
                         break;
                     case CardType.Clubs:
                         break;
@@ -308,9 +308,31 @@ public class Card : MonoBehaviour, IPlayable
         GameManager.instance.StartCoroutine(Clubs(en.gameObject, cr.clubsCastDelay, cr.clubsEffectDuration, cr.clubsRange*2, cr.clubsPushingDistance));
     }
 
-    public void DoubleDiamond(Enemy en)
+    public IEnumerator DoubleDiamond(GameObject target, float duration, float range, int damages, float heightOffset = 0f)
     {
-        GameManager.instance.StartCoroutine(Diamond(en.gameObject, cr.diamondEffectDuration, cr.diamondDamages));
+        float time = 0f;                            
+        
+        List<GameObject> hit = new List<GameObject>();              
+        
+        Collider[] hitColliders = Physics.OverlapSphere(target.transform.position, range);
+
+        while (time < duration)
+        { 
+        
+            foreach (var hitCollider in hitColliders)
+            {
+                if (hit.Contains(hitCollider.gameObject) == false && hitCollider.GetComponent<Enemy>())
+                {
+                    GameObject go = Instantiate(CardThrowing.instance.aceOfDiamond, target.transform.position.ChangeY(target.transform.position.y + heightOffset), Quaternion.identity);
+                    hit.Add(hitCollider.gameObject);
+                    StartCoroutine(Diamond(hitCollider.gameObject, duration, damages));
+                }
+            }
+        
+            time += Time.deltaTime;
+            yield return null;
+        }
+       
     }
 
     public void DoubleSpades(Enemy en)
