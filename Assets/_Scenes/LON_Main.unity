@@ -3513,6 +3513,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4425428723088313499, guid: fc9b148a2950aaf4cba8422632222c5d, type: 3}
   m_PrefabInstance: {fileID: 298102350}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &367765317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 367765316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5919aecad67ffec45ba4daaedd473be2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &367765323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3909,7 +3921,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  forceAceLeftClick: 4
+  forceAceLeftClick: 2
   forceAceRightClick: 2
   aceProbability: 10
   alignementThreshold: 0.5
@@ -3922,6 +3934,8 @@ MonoBehaviour:
   cardPrefab: {fileID: 4990739776283089070, guid: 6f2d3a61136090645a534849bbc99d5f, type: 3}
   aceOfSpades: {fileID: 964155450357921775, guid: f3d9991e63a28b34cb0cdd2cb20a10ba, type: 3}
   aceOfHeart: {fileID: 2797566844959400769, guid: f0a26f7682ce0344e94d177f0ed09e87, type: 3}
+  aceOfDiamond: {fileID: 0}
+  aceOfClubs: {fileID: 0}
   enemies: []
   canCombo: 0
 --- !u!4 &466786919

@@ -32,3 +32,4 @@ MonoBehaviour:
   clubsPushingDistance: 5.61
   clubsEffectDuration: 1
   clubsDamages: 30
+  diamondDoubleRange: 4.95

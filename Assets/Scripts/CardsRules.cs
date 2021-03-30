@@ -55,5 +55,7 @@ public class CardsRules : ScriptableObject
     [Range(0, 100)]
     public int clubsDamages;
 
-
+    [Header("Double Diamond")]
+    [Range(0, 10)]
+    public float diamondDoubleRange;
 }
