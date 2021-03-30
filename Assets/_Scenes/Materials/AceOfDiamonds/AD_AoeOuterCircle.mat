@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: TrailsMat
+  m_Name: AD_AoeOuterCircle
   m_Shader: {fileID: -6465566751694194690, guid: 34c0c4fbc3103314b8cdf40087003b9b, type: 3}
   m_ShaderKeywords: _NORMALMAP_TANGENT_SPACE
   m_LightmapFlags: 4
@@ -26,7 +26,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - Texture2D_BD98166A:
-        m_Texture: {fileID: 2800000, guid: 060d50b144edb9a42b64d4ea5abd0ad2, type: 3}
+        m_Texture: {fileID: 2800000, guid: 5af625ab0437288459e6d86a35c9b3b6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AnisotropyMap:
@@ -234,7 +234,7 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
-    - Color_DB14E197: {r: 2.9960785, g: 0, b: 0.83137256, a: 1}
+    - Color_DB14E197: {r: 0.49411765, g: 0.13137256, b: 0.49411765, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
@@ -252,7 +252,7 @@ Material:
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &5521415000991767920
+--- !u!114 &900929227768441533
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
