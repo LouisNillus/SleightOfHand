@@ -20,6 +20,8 @@ public class AceInHand : Ability
     // Update is called once per frame
     void Update()
     {
+        loadedAce = CardType.Diamond;
+
         if (Input.GetKeyDown(KeyCode.E) && isReloaded == true)
         {
             Player.instance.Shoot(loadedAce);
@@ -30,6 +32,7 @@ public class AceInHand : Ability
     public void NextAce()
     {
         loadedAce = (CardType)Random.Range(0, 4);
+        UIManager.instance.WriteAce(loadedAce);
     }
     
     public IEnumerator Cooldown()
@@ -45,7 +48,6 @@ public class AceInHand : Ability
 
         NextAce();
 
-        UIManager.instance.WriteAce(loadedAce);
         isReloaded = true;
     }
 

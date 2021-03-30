@@ -58,6 +58,8 @@ public class Card : MonoBehaviour, IPlayable
             isAnAce = true;
         }
 
+        if (CardThrowing.instance.forceAceLeftClick != CardType.Any) typeOfCard = CardThrowing.instance.forceAceLeftClick;
+
         if (cardType != CardType.Any)
         {
             mr.sharedMaterial = new Material(mr.sharedMaterial);
@@ -67,7 +69,6 @@ public class Card : MonoBehaviour, IPlayable
             isAnAce = true;
         }
 
-       // if (CardThrowing.instance.forceAceLeftClick != CardType.Any) typeOfCard = CardThrowing.instance.forceAceLeftClick;
 
         //Debug.Log(typeOfCard);
 
@@ -110,6 +111,7 @@ public class Card : MonoBehaviour, IPlayable
                     case CardType.Heart:
                         break;
                     case CardType.Diamond:
+                        GameManager.instance.StartCoroutine(SpadesDiamond(en.gameObject, cr.spadesCastDelay, cr.spadesDistance, cr.spadesEffectDuration, cr.spadesRange, cr.spadesDamages, -1f));
                         break;
                     case CardType.Clubs:
                         break;
@@ -136,6 +138,7 @@ public class Card : MonoBehaviour, IPlayable
                 switch (combo.Item2)
                 {
                     case CardType.Spades:
+                        GameManager.instance.StartCoroutine(SpadesDiamond(en.gameObject, cr.spadesCastDelay, cr.spadesDistance, cr.spadesEffectDuration, cr.spadesRange, cr.spadesDamages, -1f));
                         break;
                     case CardType.Heart:
                         break;
@@ -352,14 +355,58 @@ public class Card : MonoBehaviour, IPlayable
         GameManager.instance.StartCoroutine(Heart(en.gameObject, cr.heartCastDelay, cr.heartEffectDuration, cr.heartRange*2));
     }
 
-    public IEnumerator SpadesHeart(GameObject target, float castDelay, float length, float duration, float damageRange, int damages, float heightOffset = 0f)
+    public IEnumerator SpadesHeart()
     {
 
         yield return null;
     }
-    public IEnumerator SpadesDiamond()
+    public IEnumerator SpadesDiamond(GameObject target, float castDelay, float length, float duration, float damageRange, int damages, float heightOffset = 0f)
     {
-        yield return null;
+        float time = 0f;
+
+        GameObject go = Instantiate(CardThrowing.instance.aceOfSpades, target.transform.position.ChangeY(target.transform.position.y + heightOffset), Quaternion.identity);
+
+        Vector3 initPos = go.transform.position;
+
+        Vector3 direction = Camera.main.transform.forward;
+        go.transform.rotation = Quaternion.LookRotation(direction);
+        go.transform.localEulerAngles = go.transform.localEulerAngles.ChangeX(90);
+
+        while (time < castDelay)
+        {
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        time = 0f;
+
+        direction = Camera.main.transform.forward;
+        go.transform.rotation = Quaternion.LookRotation(direction);
+        go.transform.localEulerAngles = go.transform.localEulerAngles.ChangeX(90);
+
+        List<GameObject> hit = new List<GameObject>();
+
+        while (time < duration)
+        {
+            go.transform.position = Vector3.Lerp(go.transform.position, initPos + (direction).ChangeY(0f) * length, (time / duration));
+
+            Collider[] hitColliders = Physics.OverlapSphere(go.transform.position, damageRange);
+
+            foreach (var hitCollider in hitColliders)
+            {
+                if (hit.Contains(hitCollider.gameObject) == false && hitCollider.GetComponent<Enemy>())
+                {
+                    hit.Add(hitCollider.gameObject);
+                    GameManager.instance.StartCoroutine(Diamond(hitCollider.gameObject, cr.diamondEffectDuration, cr.diamondDamages));
+                    hitCollider.GetComponent<Enemy>().TakeDamages(damages);
+                }
+            }
+
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        go.GetComponent<UnityEngine.VFX.VisualEffect>().Stop();
     }
     public IEnumerator SpadesClubs()
     {
