@@ -313,6 +313,7 @@ public class Card : MonoBehaviour, IPlayable
         float time = 0f;                            
         
         List<GameObject> hit = new List<GameObject>();              
+        List<GameObject> vfx = new List<GameObject>();              
         
         Collider[] hitColliders = Physics.OverlapSphere(target.transform.position, range);
 
@@ -321,16 +322,22 @@ public class Card : MonoBehaviour, IPlayable
         
             foreach (var hitCollider in hitColliders)
             {
-                if (hit.Contains(hitCollider.gameObject) == false && hitCollider.GetComponent<Enemy>())
+                if (hitCollider != null && hit.Contains(hitCollider.gameObject) == false && hitCollider.GetComponent<Enemy>())
                 {
-                    GameObject go = Instantiate(CardThrowing.instance.aceOfDiamond, target.transform.position.ChangeY(target.transform.position.y + heightOffset), Quaternion.identity);
+                    GameObject go = Instantiate(CardThrowing.instance.aceOfDiamond, hitCollider.transform.position.ChangeY(hitCollider.transform.position.y + heightOffset), Quaternion.identity);
+                    vfx.Add(go);
                     hit.Add(hitCollider.gameObject);
-                    StartCoroutine(Diamond(hitCollider.gameObject, duration, damages));
+                    GameManager.instance.StartCoroutine(Diamond(hitCollider.gameObject, duration, damages));
                 }
             }
         
             time += Time.deltaTime;
             yield return null;
+        }
+
+        foreach (GameObject item in vfx)
+        {
+            item.GetComponent<UnityEngine.VFX.VisualEffect>().Stop();
         }
        
     }
