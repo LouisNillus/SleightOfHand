@@ -199,23 +199,32 @@ public class Card : MonoBehaviour, IPlayable
             t += Time.deltaTime;
         }
     }
-    public IEnumerator Diamond(GameObject target, float duration, int damages)
+    public IEnumerator Diamond(GameObject target, float duration, int damages, float heightOffset = 0f)
     {
         float time = 0f;
 
+        GameObject go = Instantiate(CardThrowing.instance.aceOfDiamond, target.transform.position.ChangeY(target.transform.position.y + heightOffset), Quaternion.identity);
+        
         NavMeshAgent agent = target.GetComponent<NavMeshAgent>();
 
         target.GetComponent<Enemy>().TakeDamages(damages);
 
         while (time < duration)
         {
-            if (target == null) yield break;
+            if (target == null)
+            {
+                go.GetComponent<UnityEngine.VFX.VisualEffect>().Stop();
+                yield break;
+            }
 
+            target.GetComponent<Enemy>().canAttack = false;
             agent.isStopped = true;
             time += Time.deltaTime;
             yield return null;
         }
         agent.isStopped = false;
+        target.GetComponent<Enemy>().canAttack = true;
+        go.GetComponent<UnityEngine.VFX.VisualEffect>().Stop();
     }
     public IEnumerator Spades(GameObject target, float castDelay, float length, float duration, float damageRange, int damages, float heightOffset = 0f)
     {
@@ -304,6 +313,8 @@ public class Card : MonoBehaviour, IPlayable
             yield return null;
             t += Time.deltaTime;
         }
+
+        go.GetComponent<UnityEngine.VFX.VisualEffect>().Stop();
     }
 
     public void DoubleClubs(Enemy en)
@@ -313,36 +324,23 @@ public class Card : MonoBehaviour, IPlayable
 
     public IEnumerator DoubleDiamond(GameObject target, float duration, float range, int damages, float heightOffset = 0f)
     {
-        float time = 0f;                            
-        
-        List<GameObject> hit = new List<GameObject>();              
-        List<GameObject> vfx = new List<GameObject>();              
-        
+        float time = 0f;
+
+        List<GameObject> hit = new List<GameObject>();
+
         Collider[] hitColliders = Physics.OverlapSphere(target.transform.position, range);
 
-        while (time < duration)
-        { 
-        
-            foreach (var hitCollider in hitColliders)
+
+        foreach (var hitCollider in hitColliders)
+        {
+            if (hitCollider != null && hit.Contains(hitCollider.gameObject) == false && hitCollider.GetComponent<Enemy>())
             {
-                if (hitCollider != null && hit.Contains(hitCollider.gameObject) == false && hitCollider.GetComponent<Enemy>())
-                {
-                    GameObject go = Instantiate(CardThrowing.instance.aceOfDiamond, hitCollider.transform.position.ChangeY(hitCollider.transform.position.y + heightOffset), Quaternion.identity);
-                    vfx.Add(go);
-                    hit.Add(hitCollider.gameObject);
-                    GameManager.instance.StartCoroutine(Diamond(hitCollider.gameObject, duration, damages));
-                }
+                hit.Add(hitCollider.gameObject);
+                GameManager.instance.StartCoroutine(Diamond(hitCollider.gameObject, duration, damages));
             }
-        
-            time += Time.deltaTime;
-            yield return null;
         }
 
-        foreach (GameObject item in vfx)
-        {
-            item.GetComponent<UnityEngine.VFX.VisualEffect>().Stop();
-        }
-       
+        yield return null;
     }
 
     public void DoubleSpades(Enemy en)
@@ -414,10 +412,46 @@ public class Card : MonoBehaviour, IPlayable
 
     }
 
-    public IEnumerator HeartDiamond()
+    public IEnumerator HeartDiamond(GameObject launcher, float castDelay, float attractionDuration, float range, float heightOffset = 0f)
     {
-        yield return null;
+        GameObject go = Instantiate(CardThrowing.instance.aceOfHeart, launcher.transform.position.ChangeY(launcher.transform.position.y + heightOffset), Quaternion.identity);
 
+        Vector3 direction = Camera.main.transform.forward;
+        go.transform.rotation = Quaternion.LookRotation(direction);
+        go.transform.localEulerAngles = go.transform.localEulerAngles.ChangeX(0);
+
+        yield return new WaitForSeconds(castDelay);
+
+        Collider[] hitColliders = Physics.OverlapSphere(launcher.transform.position, range);
+
+        List<Vector3> pos = new List<Vector3>();
+        List<Vector3> finalPos = new List<Vector3>();
+        List<GameObject> enemies = new List<GameObject>();
+
+        foreach (var hitCollider in hitColliders)
+        {
+            if (hitCollider.gameObject.GetComponent<Enemy>() && hitCollider.gameObject != launcher.gameObject)
+            {
+                pos.Add(hitCollider.transform.position);
+                Vector3 vec = (hitCollider.transform.position + (launcher.transform.position - hitCollider.transform.position).normalized * 2f);
+                finalPos.Add(vec);
+                enemies.Add(hitCollider.gameObject);
+            }
+        }
+
+        float t = 0f;
+
+        while (t < attractionDuration)
+        {
+            for (int i = 0; i < pos.Count; i++)
+            {
+                enemies[i].transform.position = Vector3.Lerp(pos[i], finalPos[i], CardThrowing.instance.easing.Evaluate(t / attractionDuration));
+            }
+            yield return null;
+            t += Time.deltaTime;
+        }
+
+        go.GetComponent<UnityEngine.VFX.VisualEffect>().Stop();
     }
 
     public IEnumerator HeartClubs(Enemy en)

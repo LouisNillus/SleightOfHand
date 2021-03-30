@@ -48,6 +48,7 @@ public class Enemy : MonoBehaviour
     public GameObject target;
     public SkinnedMeshRenderer mr;
     public bool isAttacking = false;
+    public bool canAttack = true;
     bool isChasing = false;
 
     NavMeshAgent agent;
@@ -117,7 +118,7 @@ public class Enemy : MonoBehaviour
     #region Attack
     public void Attack()
     {
-        if (IsInAttackRange() && IsInTriggerRange() && isAttacking == false)
+        if (canAttack && IsInAttackRange() && IsInTriggerRange() && isAttacking == false)
         {
             StartCoroutine(UpdateAttack());
         }
