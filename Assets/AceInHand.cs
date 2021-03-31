@@ -20,7 +20,7 @@ public class AceInHand : Ability
     // Update is called once per frame
     void Update()
     {
-        loadedAce = CardType.Diamond;
+        //loadedAce = CardType.Diamond;
 
         if (Input.GetKeyDown(KeyCode.E) && isReloaded == true)
         {

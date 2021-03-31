@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.Events;
@@ -185,6 +186,14 @@ public class Player : MonoBehaviour
     {
         if (HP <= 0 && isDying == false)
         {
+            foreach(GameObject en in CardThrowing.instance.enemies)
+            {
+                en.GetComponent<Enemy>().canAttack = false;
+                en.GetComponent<Enemy>().target = new GameObject();
+                en.GetComponent<Enemy>().target.transform.position = new Vector3(Random.Range(-100, 100), en.transform.position.y, Random.Range(-100, 100));
+
+            }
+
             isDying = true;
             animator.SetTrigger("Dead");
             controller.lockMovement = true;

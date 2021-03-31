@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 using UnityEngine.AI;
 using Sirenix.OdinInspector;
 
@@ -87,10 +88,10 @@ public class Card : MonoBehaviour, IPlayable
                 GameManager.instance.StartCoroutine(Spades(en.gameObject, cr.spadesCastDelay, cr.spadesDistance, cr.spadesEffectDuration, cr.spadesRange, cr.spadesDamages, -1f));
                 break;
             case CardType.Heart:
-                GameManager.instance.StartCoroutine(Heart(en.gameObject, cr.heartCastDelay, cr.heartEffectDuration, cr.heartRange));
+                GameManager.instance.StartCoroutine(Heart(en.gameObject, cr.heartCastDelay, cr.heartEffectDuration, cr.heartRange, -1.4f));
                 break;
             case CardType.Diamond:
-                GameManager.instance.StartCoroutine(Diamond(en.gameObject, cr.diamondEffectDuration, cr.diamondDamages));
+                GameManager.instance.StartCoroutine(Diamond(en.gameObject, cr.diamondEffectDuration, cr.diamondDamages, -1.4f));
                 break;
             case CardType.Clubs:
                 GameManager.instance.StartCoroutine(Clubs(en.gameObject, cr.clubsCastDelay, cr.clubsEffectDuration, cr.clubsRange, cr.clubsPushingDistance));
@@ -143,7 +144,7 @@ public class Card : MonoBehaviour, IPlayable
                     case CardType.Heart:
                         break;
                     case CardType.Diamond:
-                        GameManager.instance.StartCoroutine(DoubleDiamond(en.gameObject, cr.diamondEffectDuration, cr.diamondDoubleRange, cr.diamondDamages));
+                        GameManager.instance.StartCoroutine(DoubleDiamond(en.gameObject, cr.diamondEffectDuration, cr.diamondDoubleRange, cr.diamondDamages, -1.4f));
                         break;
                     case CardType.Clubs:
                         break;
@@ -169,6 +170,10 @@ public class Card : MonoBehaviour, IPlayable
                 break;
         }
     }
+
+
+
+
 
     public IEnumerator Clubs(GameObject launcher, float castDelay, float pushDuration, float range, float distance)
     {
@@ -213,7 +218,7 @@ public class Card : MonoBehaviour, IPlayable
         {
             if (target == null)
             {
-                go.GetComponent<UnityEngine.VFX.VisualEffect>().Stop();
+                go.GetComponent<ParticleSystem>().Stop();
                 yield break;
             }
 
@@ -224,7 +229,7 @@ public class Card : MonoBehaviour, IPlayable
         }
         agent.isStopped = false;
         target.GetComponent<Enemy>().canAttack = true;
-        go.GetComponent<UnityEngine.VFX.VisualEffect>().Stop();
+        go.GetComponent<ParticleSystem>().Stop();
     }
     public IEnumerator Spades(GameObject target, float castDelay, float length, float duration, float damageRange, int damages, float heightOffset = 0f)
     {
@@ -314,7 +319,7 @@ public class Card : MonoBehaviour, IPlayable
             t += Time.deltaTime;
         }
 
-        go.GetComponent<UnityEngine.VFX.VisualEffect>().Stop();
+        go.GetComponent<ParticleSystem>().Stop();
     }
 
     public void DoubleClubs(Enemy en)
@@ -336,7 +341,7 @@ public class Card : MonoBehaviour, IPlayable
             if (hitCollider != null && hit.Contains(hitCollider.gameObject) == false && hitCollider.GetComponent<Enemy>())
             {
                 hit.Add(hitCollider.gameObject);
-                GameManager.instance.StartCoroutine(Diamond(hitCollider.gameObject, duration, damages));
+                GameManager.instance.StartCoroutine(Diamond(hitCollider.gameObject, duration, damages, heightOffset));
             }
         }
 
@@ -350,7 +355,7 @@ public class Card : MonoBehaviour, IPlayable
 
     public void DoubleHeart(Enemy en)
     {
-        GameManager.instance.StartCoroutine(Heart(en.gameObject, cr.heartCastDelay, cr.heartEffectDuration, cr.heartRange*2));
+        GameManager.instance.StartCoroutine(Heart(en.gameObject, cr.heartCastDelay, cr.heartEffectDuration, cr.heartRange*2, -1.4f));
     }
 
     public IEnumerator SpadesHeart()

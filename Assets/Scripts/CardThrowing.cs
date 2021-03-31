@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class CardThrowing : MonoBehaviour
 {
@@ -49,6 +50,8 @@ public class CardThrowing : MonoBehaviour
     public GameObject aceOfHeart;
     public GameObject aceOfDiamond;
     public GameObject aceOfClubs;
+
+    public GameObject vfxImpact;
 
     [HideInInspector] public List<GameObject> enemies = new List<GameObject>();
     public bool canCombo;
@@ -183,7 +186,8 @@ public class CardThrowing : MonoBehaviour
             comboIsOver = true;
         }
 
-
+        GameObject impact = Instantiate(vfxImpact, _go.transform.position + (Vector3.up * Random.Range(-0.35f, 0f)), Quaternion.LookRotation(_target.transform.forward));
+        impact.GetComponent<VisualEffect>().Play();
 
         Destroy(_go);
     }
