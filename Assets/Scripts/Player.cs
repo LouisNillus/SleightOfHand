@@ -189,9 +189,6 @@ public class Player : MonoBehaviour
             foreach(GameObject en in CardThrowing.instance.enemies)
             {
                 en.GetComponent<Enemy>().canAttack = false;
-                en.GetComponent<Enemy>().target = new GameObject();
-                en.GetComponent<Enemy>().target.transform.position = new Vector3(Random.Range(-100, 100), en.transform.position.y, Random.Range(-100, 100));
-
             }
 
             isDying = true;

@@ -209,7 +209,7 @@ NavMeshAgent:
   m_AngularSpeed: 120
   m_StoppingDistance: 1.2
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 0
+  m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 1.38
@@ -3003,7 +3003,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  forceAceLeftClick: 0
+  forceAceLeftClick: 1
   forceAceRightClick: 2
   aceProbability: 6
   alignementThreshold: 0.5
@@ -3255,7 +3255,7 @@ NavMeshAgent:
   m_AngularSpeed: 120
   m_StoppingDistance: 1.2
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 0
+  m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 1.38
@@ -3591,7 +3591,7 @@ NavMeshAgent:
   m_AngularSpeed: 120
   m_StoppingDistance: 1.2
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 0
+  m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 1.38
@@ -4194,7 +4194,7 @@ NavMeshAgent:
   m_AngularSpeed: 120
   m_StoppingDistance: 1.2
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 0
+  m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 1.38
@@ -4335,7 +4335,7 @@ NavMeshAgent:
   m_AngularSpeed: 120
   m_StoppingDistance: 1.2
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 0
+  m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 1.38
