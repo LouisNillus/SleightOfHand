@@ -9239,13 +9239,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 564282080232096483, guid: ab9a57184a136d44c9450ba45a85f499, type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 564282080232096483, guid: ab9a57184a136d44c9450ba45a85f499, type: 3}
+      propertyPath: ShapeModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 564282080232096483, guid: ab9a57184a136d44c9450ba45a85f499, type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 757197665891439753, guid: ab9a57184a136d44c9450ba45a85f499, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.96000004
       objectReference: {fileID: 0}
     - target: {fileID: 757197665891439753, guid: ab9a57184a136d44c9450ba45a85f499, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.54
+      value: 3.846
       objectReference: {fileID: 0}
     - target: {fileID: 757197665891439753, guid: ab9a57184a136d44c9450ba45a85f499, type: 3}
       propertyPath: m_LocalPosition.z
@@ -9283,6 +9295,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7752955040042583278, guid: ab9a57184a136d44c9450ba45a85f499, type: 3}
+      propertyPath: m_RenderMode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7752955040042583278, guid: ab9a57184a136d44c9450ba45a85f499, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 2534964839176971238, guid: 7fd0ed10dc33e83409bcadc6b27a688d, type: 3}
+    - target: {fileID: 7752955040042583278, guid: ab9a57184a136d44c9450ba45a85f499, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c72229720afb21b42adc406980ff27eb, type: 2}
     - target: {fileID: 8832160834033822087, guid: ab9a57184a136d44c9450ba45a85f499, type: 3}
       propertyPath: m_Name
       value: AS_LaserBeam
