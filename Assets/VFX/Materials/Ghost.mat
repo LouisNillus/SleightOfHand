@@ -236,6 +236,7 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
+    - Color_1C6BFA9F: {r: 47.937256, g: 47.937256, b: 47.937256, a: 1}
     - Color_1E810175: {r: 0.039215688, g: 0.6392157, b: 0.5568628, a: 1}
     - Color_3A9EA81F: {r: 1, g: 1, b: 1, a: 1}
     - Color_43525B24: {r: 791.0902, g: 144.56471, b: 144.56471, a: 1}
