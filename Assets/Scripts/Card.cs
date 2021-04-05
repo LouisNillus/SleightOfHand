@@ -278,6 +278,8 @@ public class Card : MonoBehaviour, IPlayable
             yield return null;
         }
 
+
+        go.GetComponent<StopVfx>().Stop();
         //go.GetComponent<UnityEngine.VFX.VisualEffect>().Stop();
     }
     public IEnumerator Heart(GameObject launcher, float castDelay, float attractionDuration, float range, float heightOffset = 0f)
