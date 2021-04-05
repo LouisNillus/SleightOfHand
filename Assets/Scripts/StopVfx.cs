@@ -14,8 +14,8 @@ public class StopVfx : MonoBehaviour
         //gameObject.GetComponent<ParticleSystem>().Stop();
         foreach (ParticleSystem ps in transform.GetComponentsInChildren<ParticleSystem>())
         {
-            count++;
-            Debug.Log(count + ps.gameObject.name);
+            /*count++;
+            Debug.Log(count + ps.gameObject.name);*/
             ps.Stop();
             /*var currentCol = ps.colorOverLifetime.color.gradient.Evaluate(Time.deltaTime);
             var transparentCol = new Color32((byte)currentCol.r, (byte)currentCol.g, (byte)currentCol.b, 0);

@@ -22,16 +22,18 @@ public class AceInHand : Ability
     {
         //loadedAce = CardType.Diamond;
 
-        if (Input.GetKeyDown(KeyCode.E) && isReloaded == true)
+        /*if (Input.GetKeyDown(KeyCode.E) && isReloaded == true)
         {
             Player.instance.Shoot(loadedAce);
             StartCoroutine(Cooldown());
-        }
+        }*/
     }
 
     public void NextAce()
     {
         loadedAce = (CardType)Random.Range(0, 4);
+
+        if(UIManager.instance != null)
         UIManager.instance.WriteAce(loadedAce);
     }
     

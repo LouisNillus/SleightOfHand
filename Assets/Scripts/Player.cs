@@ -145,7 +145,11 @@ public class Player : MonoBehaviour
         }
 
         vig.color.value = Color.red;
-        vig.intensity.value = ((-0.008f * HP + 0.8f));
+
+        float inter = Mathf.InverseLerp(0f, 100f, HP);
+        Debug.Log(inter);
+
+        vig.intensity.value = ((-0.008f * (inter * HP) + 0.8f));
 
         float intensity = vig.intensity.value;
 

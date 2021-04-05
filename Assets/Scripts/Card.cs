@@ -94,7 +94,7 @@ public class Card : MonoBehaviour, IPlayable
                 GameManager.instance.StartCoroutine(Diamond(en.gameObject, cr.diamondEffectDuration, cr.diamondDamages, -1.4f));
                 break;
             case CardType.Clubs:
-                GameManager.instance.StartCoroutine(Clubs(en.gameObject, cr.clubsCastDelay, cr.clubsEffectDuration, cr.clubsRange, cr.clubsPushingDistance));
+                GameManager.instance.StartCoroutine(Clubs(en.gameObject, cr.clubsCastDelay, cr.clubsEffectDuration, cr.clubsRange, cr.clubsPushingDistance, -1.4f));
                 break;
         }
     }
@@ -173,11 +173,13 @@ public class Card : MonoBehaviour, IPlayable
 
 
 
-
-
-    public IEnumerator Clubs(GameObject launcher, float castDelay, float pushDuration, float range, float distance)
+    public IEnumerator Clubs(GameObject launcher, float castDelay, float pushDuration, float range, float distance, float heightOffset = 0f)
     {
         yield return new WaitForSeconds(castDelay);
+
+        GameObject go = Instantiate(CardThrowing.instance.aceOfClubs, launcher.transform.position.ChangeY(launcher.transform.position.y + heightOffset), Quaternion.identity);
+        Vector3 direction = Camera.main.transform.forward;
+        go.transform.rotation = Quaternion.LookRotation(direction);
 
         Collider[] hitColliders = Physics.OverlapSphere(launcher.transform.position, range);
 
@@ -203,7 +205,10 @@ public class Card : MonoBehaviour, IPlayable
             yield return null;
             t += Time.deltaTime;
         }
+
+        go.GetComponent<StopVfx>().Stop();
     }
+
     public IEnumerator Diamond(GameObject target, float duration, int damages, float heightOffset = 0f)
     {
         float time = 0f;
@@ -229,7 +234,10 @@ public class Card : MonoBehaviour, IPlayable
         }
         agent.isStopped = false;
         target.GetComponent<Enemy>().canAttack = true;
-        go.GetComponent<ParticleSystem>().Stop();
+
+        Destroy(go);
+
+        go.GetComponent<StopVfx>().Stop();
     }
     public IEnumerator Spades(GameObject target, float castDelay, float length, float duration, float damageRange, int damages, float heightOffset = 0f)
     {
@@ -251,7 +259,7 @@ public class Card : MonoBehaviour, IPlayable
 
         time = 0f;
 
-        direction = Camera.main.transform.forward;
+        //direction = Camera.main.transform.forward;
         go.transform.rotation = Quaternion.LookRotation(-direction);
         go.transform.localEulerAngles = go.transform.localEulerAngles.ChangeX(0);
 
@@ -323,6 +331,7 @@ public class Card : MonoBehaviour, IPlayable
             t += Time.deltaTime;
         }
 
+        go.GetComponent<StopVfx>().Stop();
         go.GetComponentInChildren<VisualEffect>().Stop();
     }
 

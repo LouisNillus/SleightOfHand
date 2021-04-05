@@ -73,7 +73,7 @@ public class CardThrowing : MonoBehaviour
     void Update()
     {
 
-        target = MostAlignedEnemy(); 
+        target = MostAlignedEnemy();
         
         if (Input.GetKey(KeyCode.C))
         {
@@ -83,6 +83,13 @@ public class CardThrowing : MonoBehaviour
         {
             GameManager.instance.SlowMotion(false);
         }
+
+
+
+        if (Input.GetKeyDown(KeyCode.Alpha1)) ThrowCard(CardType.Spades);
+        if (Input.GetKeyDown(KeyCode.Alpha2)) ThrowCard(CardType.Heart);
+        if (Input.GetKeyDown(KeyCode.Alpha3)) ThrowCard(CardType.Diamond);
+        if (Input.GetKeyDown(KeyCode.Alpha4)) ThrowCard(CardType.Clubs);
         
     }
 

@@ -22,7 +22,7 @@ MonoBehaviour:
   heartCastDelay: 0.5
   heartRange: 4
   heartDistance: 3.32
-  heartEffectDuration: 1.02
+  heartEffectDuration: 1
   heartDamages: 30
   diamondRange: 0.5
   diamondDamages: 30
@@ -30,6 +30,6 @@ MonoBehaviour:
   clubsCastDelay: 0.5
   clubsRange: 3
   clubsPushingDistance: 5.61
-  clubsEffectDuration: 1
+  clubsEffectDuration: 0.3
   clubsDamages: 30
   diamondDoubleRange: 4.95
