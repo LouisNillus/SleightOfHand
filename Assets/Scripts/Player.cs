@@ -44,7 +44,9 @@ public class Player : MonoBehaviour
     // Update
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.C) && canSlide == true)
+        
+
+        if(Input.GetKeyDown(KeyCode.C) && canSlide == true && controller.isGrounded)
         {
             StartCoroutine(Slide());
         }

@@ -240,8 +240,8 @@ public class Card : MonoBehaviour, IPlayable
         Vector3 initPos = go.transform.position;
 
         Vector3 direction = Camera.main.transform.forward;
-        go.transform.rotation = Quaternion.LookRotation(direction);
-        go.transform.localEulerAngles = go.transform.localEulerAngles.ChangeX(90);
+        go.transform.rotation = Quaternion.LookRotation(-direction);
+        go.transform.localEulerAngles = go.transform.localEulerAngles.ChangeX(0);
 
         while (time < castDelay)
         {
@@ -252,8 +252,8 @@ public class Card : MonoBehaviour, IPlayable
         time = 0f;
 
         direction = Camera.main.transform.forward;
-        go.transform.rotation = Quaternion.LookRotation(direction);
-        go.transform.localEulerAngles = go.transform.localEulerAngles.ChangeX(90);
+        go.transform.rotation = Quaternion.LookRotation(-direction);
+        go.transform.localEulerAngles = go.transform.localEulerAngles.ChangeX(0);
 
         List<GameObject> hit = new List<GameObject>();
 
@@ -278,11 +278,13 @@ public class Card : MonoBehaviour, IPlayable
             yield return null;
         }
 
-        go.GetComponent<UnityEngine.VFX.VisualEffect>().Stop();
+        //go.GetComponent<UnityEngine.VFX.VisualEffect>().Stop();
     }
     public IEnumerator Heart(GameObject launcher, float castDelay, float attractionDuration, float range, float heightOffset = 0f)
     {
         GameObject go = Instantiate(CardThrowing.instance.aceOfHeart, launcher.transform.position.ChangeY(launcher.transform.position.y + heightOffset), Quaternion.identity);
+
+        //go.transform.localScale *= range;
 
         Vector3 direction = Camera.main.transform.forward;
         go.transform.rotation = Quaternion.LookRotation(direction);
@@ -319,7 +321,7 @@ public class Card : MonoBehaviour, IPlayable
             t += Time.deltaTime;
         }
 
-        go.GetComponent<ParticleSystem>().Stop();
+        go.GetComponentInChildren<VisualEffect>().Stop();
     }
 
     public void DoubleClubs(Enemy en)

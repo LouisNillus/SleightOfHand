@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: New Rules
   m_EditorClassIdentifier: 
   comboRangeMultiplier: 2
-  normalCardDamages: 10
+  normalCardDamages: 15
   spadesCastDelay: 0.5
   spadesRange: 2
   spadesDistance: 3

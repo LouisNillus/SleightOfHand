@@ -44,6 +44,7 @@ public class Enemy : MonoBehaviour
     [HideInInspector] public UnityEvent OnTargetEnterInSight;
     [HideInInspector] public UnityEvent OnTargetEnterInRange;
 
+    public GameObject slashPs;
 
     public GameObject target;
     public SkinnedMeshRenderer mr;
@@ -161,6 +162,12 @@ public class Enemy : MonoBehaviour
 
 
         animator.SetTrigger("Attack");
+
+        if(slashPs != null)
+        foreach(ParticleSystem ps in slashPs.GetComponentsInChildren<ParticleSystem>())
+        {
+            ps.Play();
+        }
 
 
         if (IsInAttackRange() && target.GetComponent<Player>().HP > 0) target.GetComponent<Player>().TakeDamages(damages);
